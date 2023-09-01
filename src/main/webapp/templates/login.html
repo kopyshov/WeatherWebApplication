@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <title>MyWeatherApplication</title>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8"/>
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{css/login.css}">
+</head>
+<body>
+<form action="login" method="post">
+    <input type="text" name="username">
+    <input type="password" name="password"><br>
+    <input type="submit" value="Войти">
+    <p th:text="${error}"></p>
+</form>
+<form action="registration" method="post">
+    <input type="submit" value="Регистрация">
+</form>
+</body>
+</html>
