@@ -20,11 +20,4 @@ public class HomeServlet extends BasicServlet {
             templateEngine.process("home", context, response.getWriter());
         }
     }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-    }
-
-
 }
