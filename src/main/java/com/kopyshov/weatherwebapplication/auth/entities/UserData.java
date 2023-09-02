@@ -3,13 +3,14 @@ package com.kopyshov.weatherwebapplication.auth.entities;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table
 @Data
-public class UserData {
+public class UserData implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
