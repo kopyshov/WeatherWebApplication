@@ -4,7 +4,7 @@
 
 # server.xml
 Место расположения: ~"путь к Tomcat"\conf\server.xml
-В разделе <GlobalNamingResources> добавляем ЕЩЕ один <Resource>
+В разделе GlobalNamingResources добавляем ЕЩЕ один Resource
 
 	  <Resource name="jdbc/postgres" 
       global="jdbc/postgres" 
@@ -23,7 +23,7 @@
 # context.xml
 Место расположения: ~"путь к Tomcat"\conf\context.xml
 
-В разделе <Context> добавляем ResourceLink
+В разделе Context добавляем ResourceLink
 ```
 <ResourceLink name="jdbc/postgres"
 global="jdbc/postgres"
