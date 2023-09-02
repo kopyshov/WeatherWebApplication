@@ -7,6 +7,7 @@ import com.kopyshov.weatherwebapplication.auth.dao.UserDAO;
 import com.kopyshov.weatherwebapplication.auth.entities.UserToken;
 import com.kopyshov.weatherwebapplication.auth.entities.UserData;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -27,20 +28,29 @@ public class LoginServlet extends BasicServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-
-        boolean rememberMe = "true".equals(request.getParameter("rememberMe"));
-
         UserData user = UserDAO.INSTANCE.find(username, password);
 
         if (user != null) {
             HttpSession session = request.getSession();
             session.setAttribute("loggedUser", user);
+            session.setMaxInactiveInterval(60*60);
 
+            boolean rememberMe = "true".equals(request.getParameter("rememberMe"));
             if (rememberMe) {
-                UserToken token = generateToken(user);
+                String selector = RandomStringUtils.randomAlphanumeric(12);
+                String rawValidator =  RandomStringUtils.randomAlphanumeric(64);
+
+                UserToken token = generateToken(user, selector, rawValidator);
                 UserTokenDAO.INSTANCE.save(token);
-                // создаем куки для селектора
-                //создаем куки для валидатора
+
+                //create Cookies
+                Cookie cookieSelector = new Cookie("selector", selector);
+                cookieSelector.setMaxAge(604800);
+                Cookie cookieValidator = new Cookie("validator", rawValidator);
+                cookieValidator.setMaxAge(604800);
+
+                response.addCookie(cookieSelector);
+                response.addCookie(cookieValidator);
             }
             response.sendRedirect(request.getContextPath() + "/home");
         } else {
@@ -49,11 +59,8 @@ public class LoginServlet extends BasicServlet {
         }
     }
 
-    private static UserToken generateToken(UserData user) {
+    private static UserToken generateToken(UserData user, String selector, String rawValidator) {
         UserToken token = new UserToken();
-
-        String selector = RandomStringUtils.randomAlphanumeric(12);
-        String rawValidator =  RandomStringUtils.randomAlphanumeric(64);
 
         String hashedValidator = "";
         try {
