@@ -43,4 +43,15 @@ public enum UserTokenDAO {
             e.printStackTrace();
         }
     }
+
+    public void delete(UserToken token) {
+        try (Session session = HibernateUtil.INSTANCE.getSessionFactory().openSession()) {
+            session.getTransaction().begin();
+            session.remove(token);
+            session.flush();
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

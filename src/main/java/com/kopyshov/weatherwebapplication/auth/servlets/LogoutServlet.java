@@ -1,5 +1,7 @@
 package com.kopyshov.weatherwebapplication.auth.servlets;
 
+import com.kopyshov.weatherwebapplication.auth.dao.UserTokenDAO;
+import com.kopyshov.weatherwebapplication.auth.entities.UserToken;
 import com.kopyshov.weatherwebapplication.common.BasicServlet;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -10,11 +12,36 @@ import java.io.IOException;
 public class LogoutServlet extends BasicServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String username = request.getAttribute("username").toString();
-        currentSessions.remove(username);
-        Cookie cookie = new Cookie("username", null);
-        cookie.setMaxAge(0);
-        response.addCookie(cookie);
-        response.sendRedirect(request.getContextPath() + "/login");
+        request.getSession().removeAttribute("loggedUser");
+
+        Cookie[] cookies = request.getCookies();
+
+        if (cookies != null) {
+            String selector = "";
+
+            for (Cookie aCookie : cookies) {
+                if (aCookie.getName().equals("selector")) {
+                    selector = aCookie.getValue();
+                }
+            }
+
+            if (!selector.isEmpty()) {
+                // delete token from database
+                UserToken token = UserTokenDAO.INSTANCE.findBySelector(selector);
+
+                if (token != null) {
+                    UserTokenDAO.INSTANCE.delete(token);
+
+                    Cookie cookieSelector = new Cookie("selector", "");
+                    cookieSelector.setMaxAge(0);
+
+                    Cookie cookieValidator = new Cookie("validator", "");
+                    cookieValidator.setMaxAge(0);
+                    response.addCookie(cookieSelector);
+                    response.addCookie(cookieValidator);
+                }
+            }
+        }
+        response.sendRedirect(request.getContextPath());
     }
 }

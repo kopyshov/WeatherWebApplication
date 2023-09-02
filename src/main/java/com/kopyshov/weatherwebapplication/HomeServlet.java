@@ -12,13 +12,16 @@ import java.util.Objects;
 public class HomeServlet extends BasicServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Object username = request.getAttribute("username");
-        if (Objects.nonNull(username)) {
-            username = username.toString();
-            context.setVariable("user", username);
-            templateEngine.process("home", context, response.getWriter());
-        } else {
-            response.sendRedirect(request.getContextPath() + "/login");
-        }
+
+        templateEngine.process("home", context, response.getWriter());
+
+//        Object username = request.getAttribute("username");
+//        if (Objects.nonNull(username)) {
+//            username = username.toString();
+//            context.setVariable("user", username);
+//            templateEngine.process("home", context, response.getWriter());
+//        } else {
+//            response.sendRedirect(request.getContextPath() + "/login");
+//        }
     }
 }
