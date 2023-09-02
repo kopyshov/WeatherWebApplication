@@ -1,6 +1,6 @@
 package com.kopyshov.weatherwebapplication.common;
 
-import com.kopyshov.weatherwebapplication.entities.UserData;
+import com.kopyshov.weatherwebapplication.auth.entities.UserData;
 import com.kopyshov.weatherwebapplication.utils.ThymeleafUtil;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;

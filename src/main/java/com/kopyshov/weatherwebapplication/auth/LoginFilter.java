@@ -1,11 +1,16 @@
 package com.kopyshov.weatherwebapplication.auth;
 
+import com.kopyshov.weatherwebapplication.auth.dao.UserTokenDAO;
+import com.kopyshov.weatherwebapplication.auth.entities.UserToken;
+import com.kopyshov.weatherwebapplication.auth.utils.HashGenerator;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomStringUtils;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -25,26 +30,63 @@ public class LoginFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest req = (HttpServletRequest) request;
-        String loginURI = req.getContextPath() + "/login";
-        boolean loginRequest = req.getRequestURI().equals(loginURI);
-        if(loginRequest) {
-            chain.doFilter(request, response);
-            return;
-        }
-        Cookie[] cookies = req.getCookies();
-        Stream<Cookie> stream = Objects.nonNull(cookies) ? Arrays.stream(cookies) : Stream.empty();
-        String cookieValue = stream.filter(cookie -> "username".equals(cookie.getName()))
-                .findFirst()
-                .orElse(new Cookie("username", null))
-                .getValue();
-        request.setAttribute("username", cookieValue);
-        chain.doFilter(request, response);
-    }
+        HttpServletResponse resp = (HttpServletResponse) response;
+        HttpSession session = req.getSession(false);
 
-    public Optional<String> readCookie (HttpServletRequest request, String key){
-        return Arrays.stream(request.getCookies())
-                .filter(c -> key.equals(c.getName()))
-                .map(Cookie::getValue)
-                .findAny();
+        boolean loggedIn = session != null && session.getAttribute("loggedUser") != null;
+        Cookie[] cookies = req.getCookies();
+        if(!loggedIn && cookies != null) {
+            String selector = "";
+            String rawValidator = "";
+            for (Cookie aCookie : cookies) {
+                if (aCookie.getName().equals("selector")) {
+                    selector = aCookie.getValue();
+                } else if (aCookie.getName().equals("validator")) {
+                    rawValidator = aCookie.getValue();
+                }
+            }
+
+            if (!"".equals(selector) && !"".equals(rawValidator)) {
+                UserToken token = UserTokenDAO.INSTANCE.findBySelector(selector);
+                if (token != null) {
+                    String hashedValidatorDatabase = token.getValidator();
+                    String hashedValidatorCookie = "";
+                    try {
+                        hashedValidatorCookie = HashGenerator.generateSHA256(rawValidator);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    if (hashedValidatorCookie.equals(hashedValidatorDatabase)) {
+                        session = req.getSession();
+                        session.setAttribute("loggedUser", token.getUser());
+                        loggedIn = true;
+
+                        // update new token in database
+                        String newSelector = RandomStringUtils.randomAlphanumeric(12);
+                        String newRawValidator =  RandomStringUtils.randomAlphanumeric(64);
+                        String newHashedValidator = "";
+                        try {
+                            newHashedValidator = HashGenerator.generateSHA256(newRawValidator);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        token.setSelector(newSelector);
+                        token.setValidator(newHashedValidator);
+                        UserTokenDAO.INSTANCE.update(token);
+
+                        // update cookie
+                        Cookie cookieSelector = new Cookie("selector", newSelector);
+                        cookieSelector.setMaxAge(604800);
+
+                        Cookie cookieValidator = new Cookie("validator", newRawValidator);
+                        cookieValidator.setMaxAge(604800);
+
+                        resp.addCookie(cookieSelector);
+                        resp.addCookie(cookieValidator);
+                    }
+                }
+            }
+        }
+        chain.doFilter(request, response);
     }
 }
