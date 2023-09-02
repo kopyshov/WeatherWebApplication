@@ -4,12 +4,13 @@ import com.kopyshov.weatherwebapplication.utils.ThymeleafUtil;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
+import lombok.extern.slf4j.Slf4j;
 import org.thymeleaf.TemplateEngine;
 
 @WebListener
-public class ThymeleafListener implements ServletContextListener, HttpSessionListener, HttpSessionAttributeListener {
+public class StartWebApp implements ServletContextListener, HttpSessionListener, HttpSessionAttributeListener {
 
-    public ThymeleafListener() {
+    public StartWebApp() {
     }
     @Override
     public void contextInitialized(ServletContextEvent sce) {

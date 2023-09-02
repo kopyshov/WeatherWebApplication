@@ -7,13 +7,32 @@
 </head>
 <body>
 <form action="login" method="post">
-    <input type="text" name="username">
-    <input type="password" name="password"><br>
-    <input type="submit" value="Войти">
+    <table>
+        <tr>
+            <td>Login:</td>
+            <td><label>
+                    <input type="text" name="username" required>
+            </label></td>
+        </tr>
+        <tr>
+            <td>Password:</td>
+            <td><label>
+                    <input type="password" name="password" minlength="1" required>
+            </label></td>
+        </tr>
+        <tr>
+            <td><label>
+                    <input type="checkbox" name="rememberMe" value="true">
+                </label>Remember Me
+            </td>
+        </tr>
+    </table>
+    <table>
+        <tr>
+            <td><input type="submit" value="LogIn"></td>
+        </tr>
+    </table>
     <p th:text="${error}"></p>
-</form>
-<form action="registration" method="post">
-    <input type="submit" value="Регистрация">
 </form>
 </body>
 </html>

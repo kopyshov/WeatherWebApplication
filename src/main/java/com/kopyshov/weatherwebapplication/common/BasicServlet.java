@@ -1,6 +1,6 @@
 package com.kopyshov.weatherwebapplication.common;
 
-import com.kopyshov.weatherwebapplication.entities.Users;
+import com.kopyshov.weatherwebapplication.entities.UserData;
 import com.kopyshov.weatherwebapplication.utils.ThymeleafUtil;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
@@ -18,7 +18,7 @@ public class BasicServlet extends HttpServlet {
     protected ITemplateEngine templateEngine;
     protected WebContext context;
 
-    protected Map<String, Users> currentSessions;
+    protected Map<String, UserData> currentSessions;
 
     @Override
     public void init(ServletConfig config) throws ServletException {

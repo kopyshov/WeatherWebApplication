@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Objects;
 
-@WebServlet({"", "/", "/home"})
+@WebServlet({"/home"})
 public class HomeServlet extends BasicServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
