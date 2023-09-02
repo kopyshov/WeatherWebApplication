@@ -1,11 +1,11 @@
-package com.kopyshov.weatherwebapplication.entities;
+package com.kopyshov.weatherwebapplication.auth.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
 @Data
-public class UserAuth {
+public class UserToken {
     @Id
     @GeneratedValue
     private Long id;

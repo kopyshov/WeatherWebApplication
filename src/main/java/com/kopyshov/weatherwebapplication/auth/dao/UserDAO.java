@@ -1,13 +1,13 @@
-package com.kopyshov.weatherwebapplication.dao;
+package com.kopyshov.weatherwebapplication.auth.dao;
 
-import com.kopyshov.weatherwebapplication.entities.UserData;
+import com.kopyshov.weatherwebapplication.auth.entities.UserData;
 import com.kopyshov.weatherwebapplication.utils.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
 import java.util.List;
 
-public enum UsersDAO {
+public enum UserDAO {
     INSTANCE;
     public UserData find(String username, String password) {
         try (Session session = HibernateUtil.INSTANCE.getSessionFactory().openSession()) {

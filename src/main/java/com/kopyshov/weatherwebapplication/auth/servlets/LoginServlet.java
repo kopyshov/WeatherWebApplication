@@ -1,12 +1,12 @@
-package com.kopyshov.weatherwebapplication;
+package com.kopyshov.weatherwebapplication.auth.servlets;
 
+import com.kopyshov.weatherwebapplication.auth.dao.UserTokenDAO;
 import com.kopyshov.weatherwebapplication.auth.utils.HashGenerator;
 import com.kopyshov.weatherwebapplication.common.BasicServlet;
-import com.kopyshov.weatherwebapplication.dao.UsersDAO;
-import com.kopyshov.weatherwebapplication.entities.UserAuth;
-import com.kopyshov.weatherwebapplication.entities.UserData;
+import com.kopyshov.weatherwebapplication.auth.dao.UserDAO;
+import com.kopyshov.weatherwebapplication.auth.entities.UserToken;
+import com.kopyshov.weatherwebapplication.auth.entities.UserData;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -30,16 +30,15 @@ public class LoginServlet extends BasicServlet {
 
         boolean rememberMe = "true".equals(request.getParameter("rememberMe"));
 
-        UserData user = UsersDAO.INSTANCE.find(username, password);
+        UserData user = UserDAO.INSTANCE.find(username, password);
 
         if (user != null) {
             HttpSession session = request.getSession();
             session.setAttribute("loggedUser", user);
 
             if (rememberMe) {
-                //создаем токен (селектор, валидатор)
-                generateToken(user);
-                //сохраняем токен
+                UserToken token = generateToken(user);
+                UserTokenDAO.INSTANCE.save(token);
                 // создаем куки для селектора
                 //создаем куки для валидатора
             }
@@ -50,8 +49,8 @@ public class LoginServlet extends BasicServlet {
         }
     }
 
-    private static void generateToken(UserData user) {
-        UserAuth token = new UserAuth();
+    private static UserToken generateToken(UserData user) {
+        UserToken token = new UserToken();
 
         String selector = RandomStringUtils.randomAlphanumeric(12);
         String rawValidator =  RandomStringUtils.randomAlphanumeric(64);
@@ -65,8 +64,9 @@ public class LoginServlet extends BasicServlet {
 
         token.setSelector(selector);
         token.setValidator(hashedValidator);
-
         token.setUser(user);
+
+        return token;
     }
 
     public void destroy() {

@@ -1,4 +1,4 @@
-package com.kopyshov.weatherwebapplication.entities;
+package com.kopyshov.weatherwebapplication.auth.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -16,5 +16,5 @@ public class UserData {
     private String username;
     private String password;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    private Set<UserAuth> userAuthTokens = new HashSet<>();
+    private Set<UserToken> userTokenTokens = new HashSet<>();
 }

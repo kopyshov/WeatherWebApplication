@@ -1,4 +1,4 @@
-package com.kopyshov.weatherwebapplication;
+package com.kopyshov.weatherwebapplication.auth.servlets;
 
 import com.kopyshov.weatherwebapplication.common.BasicServlet;
 import jakarta.servlet.*;
