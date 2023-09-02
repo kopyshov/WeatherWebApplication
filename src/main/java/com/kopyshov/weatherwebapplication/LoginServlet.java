@@ -17,9 +17,6 @@ public class LoginServlet extends BasicServlet {
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        if (!request.getAttribute("username").toString().equals("null")) {
-            response.sendRedirect(request.getContextPath() + "/home");
-        }
         templateEngine.process("login", context, response.getWriter());
     }
 

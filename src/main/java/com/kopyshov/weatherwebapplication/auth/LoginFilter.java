@@ -4,6 +4,7 @@ import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -24,15 +25,19 @@ public class LoginFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest req = (HttpServletRequest) request;
+        String loginURI = req.getContextPath() + "/login";
+        boolean loginRequest = req.getRequestURI().equals(loginURI);
+        if(loginRequest) {
+            chain.doFilter(request, response);
+            return;
+        }
         Cookie[] cookies = req.getCookies();
         Stream<Cookie> stream = Objects.nonNull(cookies) ? Arrays.stream(cookies) : Stream.empty();
         String cookieValue = stream.filter(cookie -> "username".equals(cookie.getName()))
                 .findFirst()
-                .orElse(new Cookie("username", "null"))
+                .orElse(new Cookie("username", null))
                 .getValue();
-        if (Objects.nonNull(cookieValue)) {
-            request.setAttribute("username", cookieValue);
-        }
+        request.setAttribute("username", cookieValue);
         chain.doFilter(request, response);
     }
 
