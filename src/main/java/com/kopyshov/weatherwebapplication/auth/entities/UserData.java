@@ -16,6 +16,6 @@ public class UserData implements Serializable {
     private Long id;
     private String username;
     private String password;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     private Set<UserToken> userTokenTokens = new HashSet<>();
 }

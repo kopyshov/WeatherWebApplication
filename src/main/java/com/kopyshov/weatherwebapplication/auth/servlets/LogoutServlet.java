@@ -42,6 +42,6 @@ public class LogoutServlet extends BasicServlet {
                 }
             }
         }
-        response.sendRedirect(request.getContextPath());
+        response.sendRedirect(request.getContextPath() + "/login");
     }
 }
