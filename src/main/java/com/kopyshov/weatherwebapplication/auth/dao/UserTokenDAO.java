@@ -12,7 +12,7 @@ public enum UserTokenDAO {
     public void save(UserToken token) {
         try (Session session = HibernateUtil.INSTANCE.getSessionFactory().openSession()) {
             session.getTransaction().begin();
-            session.persist(token);
+            session.merge(token);
             session.flush();
             session.getTransaction().commit();
         } catch (Exception e) {

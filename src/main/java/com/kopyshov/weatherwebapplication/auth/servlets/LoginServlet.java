@@ -1,5 +1,6 @@
 package com.kopyshov.weatherwebapplication.auth.servlets;
 
+import com.kopyshov.weatherwebapplication.auth.LoginService;
 import com.kopyshov.weatherwebapplication.auth.UserSessionRegistration;
 import com.kopyshov.weatherwebapplication.auth.dao.UserDAO;
 import com.kopyshov.weatherwebapplication.auth.entities.UserData;
@@ -26,7 +27,13 @@ public class LoginServlet extends BasicServlet implements UserSessionRegistratio
         String password = request.getParameter("password");
         Optional<UserData> user = UserDAO.INSTANCE.find(username, password);
         if (user.isPresent()) {
-            registerUserSession(user.get(), request, response);
+            //вот тут будет сервис логина User в приложение openAccess()
+            LoginService loginService = new LoginService();
+            try {
+                loginService.openAccess(user.get(), request, response);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
             response.sendRedirect(request.getContextPath() + "/home");
         } else {
             context.setVariable("error", "Unknown user, try again");
