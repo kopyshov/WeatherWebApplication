@@ -33,7 +33,7 @@ public class LoginServlet extends BasicServlet {
         if (user != null) {
             HttpSession session = request.getSession();
             session.setAttribute("loggedUser", user);
-            session.setMaxInactiveInterval(60*60);
+            session.setMaxInactiveInterval(60*60); //one hour
 
             boolean rememberMe = "true".equals(request.getParameter("rememberMe"));
             if (rememberMe) {
@@ -45,9 +45,9 @@ public class LoginServlet extends BasicServlet {
 
                 //create Cookies
                 Cookie cookieSelector = new Cookie("selector", selector);
-                cookieSelector.setMaxAge(604800);
+                cookieSelector.setMaxAge(604800); //one week
                 Cookie cookieValidator = new Cookie("validator", rawValidator);
-                cookieValidator.setMaxAge(604800);
+                cookieValidator.setMaxAge(604800); //one week
 
                 response.addCookie(cookieSelector);
                 response.addCookie(cookieValidator);
