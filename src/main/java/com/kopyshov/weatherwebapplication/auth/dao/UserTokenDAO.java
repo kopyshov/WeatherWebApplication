@@ -1,12 +1,11 @@
 package com.kopyshov.weatherwebapplication.auth.dao;
 
-import com.kopyshov.weatherwebapplication.auth.entities.UserData;
 import com.kopyshov.weatherwebapplication.auth.entities.UserToken;
 import com.kopyshov.weatherwebapplication.utils.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
-import java.util.List;
+import java.util.Optional;
 
 public enum UserTokenDAO {
     INSTANCE;
@@ -17,20 +16,16 @@ public enum UserTokenDAO {
             session.flush();
             session.getTransaction().commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
-    public UserToken findBySelector(String selector) {
+    public Optional<UserToken> findBySelector(String selector) {
         try (Session session = HibernateUtil.INSTANCE.getSessionFactory().openSession()) {
-            Query<UserToken> query = session.createQuery("from UserToken where selector = :selector", UserToken.class);
+            Query<UserToken> query = session.createNamedQuery("findBySelector", UserToken.class);
             query.setParameter("selector", selector);
-            List<UserToken> tokens = query.getResultList();
-            return tokens.get(0);
-        } catch (Exception e) {
-            e.printStackTrace();
+            return query.uniqueResultOptional();
         }
-        return null;
     }
 
     public void update(UserToken token) {
@@ -40,7 +35,7 @@ public enum UserTokenDAO {
             session.flush();
             session.getTransaction().commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -51,7 +46,7 @@ public enum UserTokenDAO {
             session.flush();
             session.getTransaction().commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 }

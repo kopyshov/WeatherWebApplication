@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @WebServlet({"/login"})
 public class LoginServlet extends BasicServlet implements UserSessionRegistration {
@@ -23,14 +24,12 @@ public class LoginServlet extends BasicServlet implements UserSessionRegistratio
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-
-        UserData user = UserDAO.INSTANCE.find(username, password);
-
-        if (user != null) {
-            registerUserSession(user, request, response);
+        Optional<UserData> user = UserDAO.INSTANCE.find(username, password);
+        if (user.isPresent()) {
+            registerUserSession(user.get(), request, response);
             response.sendRedirect(request.getContextPath() + "/home");
         } else {
-            context.setVariable("error", "Unknown login, try again");
+            context.setVariable("error", "Unknown user, try again");
             templateEngine.process("login", context, response.getWriter());
         }
     }

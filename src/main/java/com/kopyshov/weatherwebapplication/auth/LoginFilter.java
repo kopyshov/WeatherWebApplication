@@ -13,11 +13,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @WebFilter("/*")
 @Slf4j
-public class LoginFilter implements Filter {
-    public void init(FilterConfig config) throws ServletException {
+public class LoginFilter implements Filter, UserSessionRegistration {
+    public void init(FilterConfig config) {
     }
 
     public void destroy() {
@@ -43,29 +44,21 @@ public class LoginFilter implements Filter {
             }
 
             if (!"".equals(selector) && !"".equals(rawValidator)) {
-                UserToken token = UserTokenDAO.INSTANCE.findBySelector(selector);
-                if (token != null) {
+                Optional<UserToken> foundedToken = UserTokenDAO.INSTANCE.findBySelector(selector);
+                if (foundedToken.isPresent()) {
+                    UserToken token = foundedToken.get();
                     String hashedValidatorDatabase = token.getValidator();
-                    String hashedValidatorCookie = "";
-                    try {
-                        hashedValidatorCookie = HashGenerator.generateSHA256(rawValidator);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    String hashedValidatorCookie = generateHashedValidator(rawValidator);
+
                     if (hashedValidatorCookie.equals(hashedValidatorDatabase)) {
                         session = req.getSession();
                         session.setAttribute("loggedUser", token.getUser());
-                        loggedIn = true;
+
 
                         // update new token in database
                         String newSelector = RandomStringUtils.randomAlphanumeric(12);
                         String newRawValidator =  RandomStringUtils.randomAlphanumeric(64);
-                        String newHashedValidator = "";
-                        try {
-                            newHashedValidator = HashGenerator.generateSHA256(newRawValidator);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                        String newHashedValidator = generateHashedValidator(newRawValidator);
                         token.setSelector(newSelector);
                         token.setValidator(newHashedValidator);
                         UserTokenDAO.INSTANCE.update(token);
@@ -84,5 +77,13 @@ public class LoginFilter implements Filter {
             }
         }
         chain.doFilter(request, response);
+    }
+
+    private String generateHashedValidator(String rawValidator) {
+        try {
+            return HashGenerator.generateSHA256(rawValidator);
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
     }
 }
