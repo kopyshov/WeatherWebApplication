@@ -9,6 +9,7 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 import org.thymeleaf.templateresolver.WebApplicationTemplateResolver;
 import org.thymeleaf.web.IWebApplication;
+import org.thymeleaf.web.IWebRequest;
 import org.thymeleaf.web.servlet.IServletWebExchange;
 import org.thymeleaf.web.servlet.JakartaServletWebApplication;
 
@@ -33,7 +34,7 @@ public class ThymeleafUtil {
         WebApplicationTemplateResolver templateResolver = new WebApplicationTemplateResolver(application);
 
         templateResolver.setTemplateMode(TemplateMode.HTML);
-        templateResolver.setPrefix("/templates/");
+        templateResolver.setPrefix("/WEB-INF/templates/");
         templateResolver.setSuffix(".html");
         templateResolver.setCharacterEncoding("UTF-8");
 

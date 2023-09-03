@@ -30,6 +30,7 @@ public abstract class BasicServlet extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         context = ThymeleafUtil.buildWebContext(req, resp, getServletContext());
+        resp.setContentType("text/html;charset=UTF-8");
         try {
             super.service(req, resp);
         } catch (Exception e) {
