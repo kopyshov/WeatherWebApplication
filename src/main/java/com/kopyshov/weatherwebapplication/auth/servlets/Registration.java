@@ -1,7 +1,6 @@
 package com.kopyshov.weatherwebapplication.auth.servlets;
 
 import com.kopyshov.weatherwebapplication.auth.LoginService;
-import com.kopyshov.weatherwebapplication.auth.UserSessionRegistration;
 import com.kopyshov.weatherwebapplication.auth.dao.UserDAO;
 import com.kopyshov.weatherwebapplication.auth.entities.UserData;
 import com.kopyshov.weatherwebapplication.common.BasicServlet;

@@ -10,14 +10,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.RandomStringUtils;
 
 import java.io.IOException;
 import java.util.Optional;
 
 @WebFilter("/*")
 @Slf4j
-public class LoginFilter implements Filter, UserSessionRegistration {
+public class LoginFilter implements Filter {
     public void init(FilterConfig config) {
     }
     @Override
@@ -37,7 +36,7 @@ public class LoginFilter implements Filter, UserSessionRegistration {
                     rawValidator = aCookie.getValue();
                 }
             }
-            if (!"".equals(selector) && !"".equals(rawValidator)) { //проверка есть TOKEN
+            if (!"".equals(selector) && !"".equals(rawValidator)) { //проверка есть ли TOKEN
                 Optional<UserToken> foundedToken = UserTokenDAO.INSTANCE.findBySelector(selector);
                 if (foundedToken.isPresent()) {
                     UserToken token = foundedToken.get();
@@ -51,26 +50,6 @@ public class LoginFilter implements Filter, UserSessionRegistration {
                         } catch (Exception e) {
                             throw new RuntimeException(e);
                         }
-//                        session = request.getSession();
-//                        session.setAttribute("loggedUser", token.getUser());
-//
-//                        // update new token in database
-//                        String newSelector = RandomStringUtils.randomAlphanumeric(12);
-//                        String newRawValidator =  RandomStringUtils.randomAlphanumeric(64);
-//                        String newHashedValidator = generateHashedValidator(newRawValidator);
-//                        token.setSelector(newSelector);
-//                        token.setValidator(newHashedValidator);
-//                        UserTokenDAO.INSTANCE.update(token);
-//
-//                        // update cookie
-//                        Cookie cookieSelector = new Cookie("selector", newSelector);
-//                        cookieSelector.setMaxAge(604800);
-//
-//                        Cookie cookieValidator = new Cookie("validator", newRawValidator);
-//                        cookieValidator.setMaxAge(604800);
-//
-//                        response.addCookie(cookieSelector);
-//                        response.addCookie(cookieValidator);
                     }
                 }
             }

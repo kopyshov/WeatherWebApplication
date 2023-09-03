@@ -28,17 +28,6 @@ public enum UserTokenDAO {
         }
     }
 
-    public void update(UserToken token) {
-        try (Session session = HibernateUtil.INSTANCE.getSessionFactory().openSession()) {
-            session.getTransaction().begin();
-            session.merge(token);
-            session.flush();
-            session.getTransaction().commit();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public void delete(UserToken token) {
         try (Session session = HibernateUtil.INSTANCE.getSessionFactory().openSession()) {
             session.getTransaction().begin();
