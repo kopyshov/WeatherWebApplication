@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class BasicServlet extends HttpServlet {
+public abstract class BasicServlet extends HttpServlet {
     protected ITemplateEngine templateEngine;
     protected WebContext context;
 

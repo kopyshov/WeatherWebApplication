@@ -21,4 +21,15 @@ public enum UserDAO {
         }
         return null;
     }
+
+    public void save(UserData user) {
+        try (Session session = HibernateUtil.INSTANCE.getSessionFactory().openSession()) {
+            session.getTransaction().begin();
+            session.persist(user);
+            session.flush();
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
