@@ -24,7 +24,7 @@ public class UserToken implements Serializable {
     @JoinColumn(nullable = false)
     private UserData user;
 
-    public UserToken(String selector, String validator, UserData user) {
+    public UserToken(UserData user, String selector, String validator) {
         this.selector = selector;
         this.validator = validator;
         this.user = user;

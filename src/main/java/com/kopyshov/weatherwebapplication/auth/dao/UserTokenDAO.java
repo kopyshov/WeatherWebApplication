@@ -16,7 +16,7 @@ public enum UserTokenDAO {
             session.flush();
             session.getTransaction().commit();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Failed insert token to database", e);
         }
     }
 
@@ -35,7 +35,7 @@ public enum UserTokenDAO {
             session.flush();
             session.getTransaction().commit();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Failed delete token ", e);
         }
     }
 }

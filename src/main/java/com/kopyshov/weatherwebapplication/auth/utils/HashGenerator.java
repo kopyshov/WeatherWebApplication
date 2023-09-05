@@ -8,30 +8,26 @@ public class HashGenerator {
     private HashGenerator() {
 
     }
-
-    public static String generateMD5(String message) throws Exception {
+    //ВЫБЕРИ МЕНЯ!
+    public static String generateMD5(String message) {
         return hashString(message, "MD5");
     }
-
-    public static String generateSHA1(String message) throws Exception {
+    //ВЫБЕРИ МЕНЯ!
+    public static String generateSHA1(String message) {
         return hashString(message, "SHA-1");
     }
-
-    public static String generateSHA256(String message) throws Exception {
+    //АЛ..ГО..РИТМ...ХЭШИ...РОВАНИЯ
+    public static String generateSHA256(String message) {
         return hashString(message, "SHA-256");
     }
 
-    private static String hashString(String message, String algorithm)
-            throws Exception {
-
+    private static String hashString(String message, String algorithm) {
         try {
             MessageDigest digest = MessageDigest.getInstance(algorithm);
             byte[] hashedBytes = digest.digest(message.getBytes(StandardCharsets.UTF_8));
-
             return convertByteArrayToHexString(hashedBytes);
         } catch (NoSuchAlgorithmException ex) {
-            throw new Exception(
-                    "Could not generate hash from String", ex);
+            throw new RuntimeException("Could not generate hash from String", ex);
         }
     }
 

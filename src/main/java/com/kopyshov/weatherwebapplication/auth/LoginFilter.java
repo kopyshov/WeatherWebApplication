@@ -5,51 +5,36 @@ import com.kopyshov.weatherwebapplication.auth.entities.UserToken;
 import com.kopyshov.weatherwebapplication.auth.utils.HashGenerator;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.Optional;
 
 @WebFilter("/*")
 @Slf4j
-public class LoginFilter implements Filter {
+public class LoginFilter implements Filter, MappingCookies {
     public void init(FilterConfig config) {
     }
     @Override
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest request = (HttpServletRequest) req;
-        HttpServletResponse response = (HttpServletResponse) resp;
         HttpSession session = request.getSession(false);
         boolean loggedIn = session != null && session.getAttribute("loggedUser") != null;
-        Cookie[] cookies = request.getCookies();
-        if(!loggedIn && cookies != null) { //если не залогирован и есть куки
-            String selector = "";
-            String rawValidator = "";
-            for (Cookie aCookie : cookies) {
-                if (aCookie.getName().equals("selector")) {
-                    selector = aCookie.getValue();
-                } else if (aCookie.getName().equals("validator")) {
-                    rawValidator = aCookie.getValue();
-                }
-            }
-            if (!"".equals(selector) && !"".equals(rawValidator)) { //проверка есть ли TOKEN
-                Optional<UserToken> foundedToken = UserTokenDAO.INSTANCE.findBySelector(selector);
-                if (foundedToken.isPresent()) {
-                    UserToken token = foundedToken.get();
-                    String hashedValidatorDatabase = token.getValidator();
-                    String hashedValidatorCookie = generateHashedValidator(rawValidator);
+        request.setAttribute("rememberMe", false);
 
-                    if (hashedValidatorCookie.equals(hashedValidatorDatabase)) {
-                        LoginService loginService = new LoginService();
-                        try {
-                            loginService.openAccessByToken(token.getUser(), request, response);
-                        } catch (Exception e) {
-                            throw new RuntimeException(e);
-                        }
+        Map<String, String> cookies = mapCookies(request);
+
+        if(!loggedIn && !cookies.isEmpty()) { //если не залогирован и есть куки
+            if (cookies.containsKey("selector") && cookies.containsKey("validator")) { //в куки есть токен?
+                Optional<UserToken> savedToken = UserTokenDAO.INSTANCE.findBySelector(cookies.get("selector"));
+                if (savedToken.isPresent()) { //есть ли Token в БД
+                    String hashedValidatorDatabase = savedToken.get().getValidator(); //валидатор из БД
+                    String hashedValidatorCookie = generateHashedValidator(cookies.get("validator")); //валидатор request
+                    if(hashedValidatorCookie.equals(hashedValidatorDatabase)) { //проверяем валидность
+                        request.setAttribute("rememberMe", true); //устанавливаем параметр для обновления токена
                     }
                 }
             }
