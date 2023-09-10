@@ -5,7 +5,6 @@ import com.kopyshov.weatherwebapplication.auth.entities.UserData;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.SneakyThrows;
 
 import java.io.IOException;
 import java.util.Optional;
