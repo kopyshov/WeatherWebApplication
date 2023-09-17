@@ -1,0 +1,33 @@
+.container-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.container-header-component {
+    margin: 15px;
+    display: inline;
+}
+
+a:hover {
+    filter: brightness(0.7);
+}
+
+#singin-btn {
+    margin: 2px;
+    display: inline-flex; /* Строчно-блочный элемент */
+    background: #00fff7;
+    color: #000470;
+    padding: 0.5rem;
+    text-decoration: none;
+    border-radius: 3px;
+}
+
+#signup-btn {
+    margin: 2px;
+    display: inline-flex; /* Строчно-блочный элемент */
+    background: #005dff;
+    color: #fff;
+    padding: 0.5rem;
+    text-decoration: none;
+    border-radius: 3px;
+}

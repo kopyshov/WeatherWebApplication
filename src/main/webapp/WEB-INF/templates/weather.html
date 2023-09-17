@@ -3,13 +3,13 @@
 <head>
     <title>MyWeatherApplication</title>
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8"/>
-    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/registration.css}">
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/styles.css}">
 </head>
 <body>
-<form action="weather" method="post">
-    <p>Location: </p><label>
-    <input type="text" name="location">
-</label>
-</form>
+    <div th:replace="~{/components/header-component}"></div>
+<!--    <div th:replace="~{saved-component}">Тег отражается если сохранены города</div>-->
+<!--    <div th:replace="~{footer-component}">Копышовы</div>-->
 </body>
 </html>
+
+

@@ -5,6 +5,7 @@ import com.kopyshov.weatherwebapplication.openweathermap.api.forecast.entities.*
 import com.kopyshov.weatherwebapplication.openweathermap.api.forecast.entities.gson.SecondsDateTypeAdapter;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 

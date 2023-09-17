@@ -36,9 +36,15 @@ public class OpenWeatherApiService {
         return URI.create(geoQuery);
     }
 
-    public static URI buildUriRequestByCoordinates(String lan, String lon) {
+    public static URI buildUriRequestByCityId(double lan, double lon) {
         WeatherQueryBuilder builder = new WeatherQueryBuilder();
         String weatherQuery = builder.buildWeatherQuery(lan, lon);
+        return URI.create(weatherQuery);
+    }
+
+    public static URI buildUriRequestByCityId(String cityID) {
+        WeatherQueryBuilder builder = new WeatherQueryBuilder();
+        String weatherQuery = builder.buildWeatherQuery(cityID);
         return URI.create(weatherQuery);
     }
 
@@ -46,9 +52,9 @@ public class OpenWeatherApiService {
         List<LocationWeatherData> weatherData = new ArrayList<>();
         LocationGeoData[] locations = getLocationsByCityName(cityName);
         for (LocationGeoData loc : locations) {
-            String latitude = loc.getLat().toString();
-            String longitude = loc.getLon().toString();
-            URI uri = buildUriRequestByCoordinates(latitude, longitude);
+            double latitude = Math.round(loc.getLat() * 100.0) / 100.0;
+            double longitude = Math.round(loc.getLon() * 100.0) / 100.0;
+            URI uri = buildUriRequestByCityId(latitude, longitude);
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(uri)
                     .GET().build();

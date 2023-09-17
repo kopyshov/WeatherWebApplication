@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8"/>
+  <link rel="stylesheet" type="text/css" media="all" th:href="@{css/styles.css}">
+</head>
+<body>
+<header class="container-header">
+  <div class="header-component">Здесь название приложения</div>
+  <div class="header-component">
+      <form th:action="@{/search}" method="post">
+        <label>Локация:
+          <input type="text" name="location" required>
+        </label>
+          <input type="submit" name="find" value="Найти">
+      </form>
+  </div>
+  <div class="header-component" th:if="${username == null}">
+      <a id="singin-btn" th:href="@{/login}">
+        Sign-In
+      </a>
+      <a id="signup-btn" th:href="@{/registration}">
+        Sign-Up
+      </a>
+  </div>
+  <div class="container-header-component" th:if="${username != null}">
+      <span th:text="${username}"></span>
+      <form id="logout" th:action="@{/logout}" method="post">
+        <input type="submit" value="Выход">
+      </form>
+  </div>
+</header>
+</body>
+</html>
+

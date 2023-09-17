@@ -25,7 +25,7 @@ public class LoginServlet extends AuthServlet {
         Optional<UserData> user = UserDAO.INSTANCE.find(username, password);
         if (user.isPresent()) {
             authService.openAccess(user.get(), request, response);
-            response.sendRedirect(request.getContextPath() + "/home");
+            response.sendRedirect(request.getContextPath() + "/weather");
         } else {
             context.setVariable("error", "Unknown user, try again");
             templateEngine.process("login", context, response.getWriter());

@@ -4,6 +4,7 @@ import com.kopyshov.weatherwebapplication.openweathermap.api.forecast.entities.*
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 

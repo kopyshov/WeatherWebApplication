@@ -18,8 +18,8 @@ public class HomeServlet extends BasicServlet {
         UserData user = (UserData) session.getAttribute("loggedUser");
         if (Objects.nonNull(user)) {
             String username = user.getUsername();
-            context.setVariable("user", username);
-            templateEngine.process("home", context, response.getWriter());
+            context.setVariable("username", username);
+            templateEngine.process("weather", context, response.getWriter());
         } else {
             response.sendRedirect(request.getContextPath() + "/login");
         }

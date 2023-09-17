@@ -24,7 +24,7 @@ public class Registration extends AuthServlet {
             UserData user = new UserData(username, password);
             UserDAO.INSTANCE.save(user);
             authService.openAccess(user, request, response);
-            response.sendRedirect(request.getContextPath() + "/home");
+            response.sendRedirect(request.getContextPath() + "/weather");
         } catch (PersistenceException e) {
             context.setVariable("error", "User with this login exists");
             templateEngine.process("registration", context, response.getWriter());
