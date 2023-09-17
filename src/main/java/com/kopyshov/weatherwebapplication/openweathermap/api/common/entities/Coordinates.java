@@ -1,4 +1,4 @@
-package com.kopyshov.weatherwebapplication.openweathermap.api.forecast.entities;
+package com.kopyshov.weatherwebapplication.openweathermap.api.common.entities;
 
 import lombok.Data;
 

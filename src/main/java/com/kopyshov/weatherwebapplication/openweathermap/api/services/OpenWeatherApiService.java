@@ -1,9 +1,9 @@
 package com.kopyshov.weatherwebapplication.openweathermap.api.services;
 
 import com.google.gson.Gson;
-import com.kopyshov.weatherwebapplication.openweathermap.api.forecast.LocationWeatherData;
-import com.kopyshov.weatherwebapplication.openweathermap.api.forecast.WeatherQueryBuilder;
-import com.kopyshov.weatherwebapplication.openweathermap.api.geo.GeoQueryBuilder;
+import com.kopyshov.weatherwebapplication.openweathermap.api.currentweather.LocationWeatherData;
+import com.kopyshov.weatherwebapplication.openweathermap.api.currentweather.WeatherQueryBuilderBuilder;
+import com.kopyshov.weatherwebapplication.openweathermap.api.geo.GeoQueryBuilderBuilder;
 import com.kopyshov.weatherwebapplication.openweathermap.api.geo.LocationGeoData;
 
 import java.io.IOException;
@@ -31,19 +31,19 @@ public class OpenWeatherApiService {
 
 
     public static URI buildUriRequestByCityName(String location) {
-        GeoQueryBuilder builder = new GeoQueryBuilder();
+        GeoQueryBuilderBuilder builder = new GeoQueryBuilderBuilder();
         String geoQuery = builder.buildGeoQuery(location);
         return URI.create(geoQuery);
     }
 
     public static URI buildUriRequestByCityId(double lan, double lon) {
-        WeatherQueryBuilder builder = new WeatherQueryBuilder();
+        WeatherQueryBuilderBuilder builder = new WeatherQueryBuilderBuilder();
         String weatherQuery = builder.buildWeatherQuery(lan, lon);
         return URI.create(weatherQuery);
     }
 
     public static URI buildUriRequestByCityId(String cityID) {
-        WeatherQueryBuilder builder = new WeatherQueryBuilder();
+        WeatherQueryBuilderBuilder builder = new WeatherQueryBuilderBuilder();
         String weatherQuery = builder.buildWeatherQuery(cityID);
         return URI.create(weatherQuery);
     }

@@ -1,15 +1,11 @@
-package com.kopyshov.weatherwebapplication.openweathermap.api.forecast;
+package com.kopyshov.weatherwebapplication.openweathermap.api.currentweather;
 
-import com.kopyshov.weatherwebapplication.openweathermap.api.query.AbstractQuery;
+import static com.kopyshov.weatherwebapplication.openweathermap.api.common.ConfigWeatherApi.*;
 
-public class WeatherQueryBuilder extends AbstractQuery {
-    private static final String WEATHER_QUERY_PART = "data/2.5/weather";
-    private static final String CITY_ID_EQUALS = "id=";
-    private static final String LATITUDE_EQUALS = "lat=";
-    private static final String LONGITUDE_EQUALS = "lon=";
-    private static final String METRIC_UNITS = "units=metric";
+public class WeatherQueryBuilderBuilder {
+    private final String baseUrl;
 
-    public WeatherQueryBuilder() {
+    public WeatherQueryBuilderBuilder() {
         baseUrl = API_URL + WEATHER_QUERY_PART;
     }
 

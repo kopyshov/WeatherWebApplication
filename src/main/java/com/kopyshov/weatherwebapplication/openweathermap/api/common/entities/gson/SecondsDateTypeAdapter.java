@@ -1,4 +1,4 @@
-package com.kopyshov.weatherwebapplication.openweathermap.api.forecast.entities.gson;
+package com.kopyshov.weatherwebapplication.openweathermap.api.common.entities.gson;
 
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;

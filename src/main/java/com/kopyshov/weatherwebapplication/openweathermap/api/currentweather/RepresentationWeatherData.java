@@ -1,16 +1,16 @@
-package com.kopyshov.weatherwebapplication.openweathermap.api.forecast;
+package com.kopyshov.weatherwebapplication.openweathermap.api.currentweather;
 
-import com.google.gson.annotations.JsonAdapter;
-import com.kopyshov.weatherwebapplication.openweathermap.api.forecast.entities.*;
-import com.kopyshov.weatherwebapplication.openweathermap.api.forecast.entities.gson.SecondsDateTypeAdapter;
+import com.kopyshov.weatherwebapplication.openweathermap.api.common.entities.*;
+import com.kopyshov.weatherwebapplication.openweathermap.api.currentweather.entities.*;
+import lombok.Builder;
 import lombok.Data;
 
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
 @Data
-public class LocationWeatherData {
+@Builder
+public class RepresentationWeatherData {
     private Coordinates coord;
     private List<Weather> weather;
     private String base;
@@ -19,7 +19,6 @@ public class LocationWeatherData {
     private Wind wind;
     private Rain rain;
     private Clouds clouds;
-    @JsonAdapter(SecondsDateTypeAdapter.class)
     private Date dt;
     private SystemParameters sys;
     private int timezone;

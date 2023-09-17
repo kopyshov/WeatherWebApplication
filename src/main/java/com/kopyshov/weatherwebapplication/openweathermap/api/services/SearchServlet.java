@@ -2,9 +2,9 @@ package com.kopyshov.weatherwebapplication.openweathermap.api.services;
 
 import com.kopyshov.weatherwebapplication.auth.entities.UserData;
 import com.kopyshov.weatherwebapplication.common.BasicServlet;
-import com.kopyshov.weatherwebapplication.openweathermap.api.forecast.LocationWeatherData;
-import com.kopyshov.weatherwebapplication.openweathermap.api.forecast.RepresentationWeatherData;
-import com.kopyshov.weatherwebapplication.openweathermap.api.forecast.utils.WeatherDataMapper;
+import com.kopyshov.weatherwebapplication.openweathermap.api.currentweather.LocationWeatherData;
+import com.kopyshov.weatherwebapplication.openweathermap.api.currentweather.RepresentationWeatherData;
+import com.kopyshov.weatherwebapplication.openweathermap.api.common.utils.WeatherDataMapper;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

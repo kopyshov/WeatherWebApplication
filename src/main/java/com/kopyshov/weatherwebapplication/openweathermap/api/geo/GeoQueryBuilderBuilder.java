@@ -1,13 +1,14 @@
 package com.kopyshov.weatherwebapplication.openweathermap.api.geo;
 
-import com.kopyshov.weatherwebapplication.openweathermap.api.query.AbstractQuery;
-
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
-public class GeoQueryBuilder extends AbstractQuery {
-    String QUERY_GEO_PART = "geo/1.0/direct";
-    public GeoQueryBuilder() {
+import static com.kopyshov.weatherwebapplication.openweathermap.api.common.ConfigWeatherApi.*;
+
+public class GeoQueryBuilderBuilder {
+
+    private final String baseUrl;
+    public GeoQueryBuilderBuilder() {
         baseUrl = API_URL + QUERY_GEO_PART;
     }
     public String buildGeoQuery(String cityName) {

@@ -1,10 +1,9 @@
-package com.kopyshov.weatherwebapplication.openweathermap.api.forecast.entities;
+package com.kopyshov.weatherwebapplication.openweathermap.api.common.entities;
 
 import com.google.gson.annotations.JsonAdapter;
-import com.kopyshov.weatherwebapplication.openweathermap.api.forecast.entities.gson.SecondsDateTypeAdapter;
+import com.kopyshov.weatherwebapplication.openweathermap.api.common.entities.gson.SecondsDateTypeAdapter;
 import lombok.Data;
 
-import java.time.LocalDate;
 import java.util.Date;
 
 @Data
