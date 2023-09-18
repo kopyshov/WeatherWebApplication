@@ -1,13 +1,13 @@
 package com.kopyshov.weatherwebapplication.openweathermap.api.common;
 
-public class ConfigWeatherApi {
+public class QueryConfigWeatherApi {
     public static final String API_URL = "https://api.openweathermap.org/";
     public static final String CITY_NAME_IS = "q=";
     public static final String QUESTION_MARK = "?";
     public static final String AND = "&";
     public static final String LIMIT = "limit=5";
     public static final String APP_ID_EQUALS = "appid=";
-    public static final String APP_ID = "ed4c24e83f1ec29a34997c12e2fc7604";
+    public static final String APP_ID = System.getenv("WEATHER_APP_ID");
 
 
     public static final String QUERY_GEO_PART = "geo/1.0/direct";

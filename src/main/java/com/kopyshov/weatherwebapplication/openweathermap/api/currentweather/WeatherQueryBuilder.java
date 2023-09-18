@@ -1,11 +1,11 @@
 package com.kopyshov.weatherwebapplication.openweathermap.api.currentweather;
 
-import static com.kopyshov.weatherwebapplication.openweathermap.api.common.ConfigWeatherApi.*;
+import static com.kopyshov.weatherwebapplication.openweathermap.api.common.QueryConfigWeatherApi.*;
 
-public class WeatherQueryBuilderBuilder {
+public class WeatherQueryBuilder {
     private final String baseUrl;
 
-    public WeatherQueryBuilderBuilder() {
+    public WeatherQueryBuilder() {
         baseUrl = API_URL + WEATHER_QUERY_PART;
     }
 

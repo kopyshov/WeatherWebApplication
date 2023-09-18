@@ -3,12 +3,12 @@ package com.kopyshov.weatherwebapplication.openweathermap.api.geo;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
-import static com.kopyshov.weatherwebapplication.openweathermap.api.common.ConfigWeatherApi.*;
+import static com.kopyshov.weatherwebapplication.openweathermap.api.common.QueryConfigWeatherApi.*;
 
-public class GeoQueryBuilderBuilder {
+public class GeoQueryBuilder {
 
     private final String baseUrl;
-    public GeoQueryBuilderBuilder() {
+    public GeoQueryBuilder() {
         baseUrl = API_URL + QUERY_GEO_PART;
     }
     public String buildGeoQuery(String cityName) {

@@ -1,7 +1,6 @@
 package com.kopyshov.weatherwebapplication.openweathermap.api.currentweather;
 
 import com.kopyshov.weatherwebapplication.openweathermap.api.common.entities.*;
-import com.kopyshov.weatherwebapplication.openweathermap.api.currentweather.entities.*;
 import lombok.Builder;
 import lombok.Data;
 
