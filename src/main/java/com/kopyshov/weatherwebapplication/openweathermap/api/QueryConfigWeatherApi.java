@@ -1,4 +1,4 @@
-package com.kopyshov.weatherwebapplication.openweathermap.api.common;
+package com.kopyshov.weatherwebapplication.openweathermap.api;
 
 public class QueryConfigWeatherApi {
     public static final String API_URL = "https://api.openweathermap.org/";

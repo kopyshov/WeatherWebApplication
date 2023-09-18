@@ -1,7 +1,7 @@
-package com.kopyshov.weatherwebapplication.openweathermap.api.common.utils;
+package com.kopyshov.weatherwebapplication.buisness.utils;
 
 import com.kopyshov.weatherwebapplication.openweathermap.api.currentweather.LocationWeatherData;
-import com.kopyshov.weatherwebapplication.openweathermap.api.currentweather.RepresentationWeatherData;
+import com.kopyshov.weatherwebapplication.buisness.RepresentationWeatherData;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.kopyshov.weatherwebapplication.openweathermap.api.currentweather;
+package com.kopyshov.weatherwebapplication.buisness;
 
 import com.kopyshov.weatherwebapplication.openweathermap.api.common.entities.*;
 import lombok.Builder;

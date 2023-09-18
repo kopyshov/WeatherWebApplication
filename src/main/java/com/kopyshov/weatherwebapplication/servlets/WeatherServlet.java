@@ -1,4 +1,4 @@
-package com.kopyshov.weatherwebapplication.openweathermap.api;
+package com.kopyshov.weatherwebapplication.servlets;
 
 import com.kopyshov.weatherwebapplication.auth.entities.UserData;
 import com.kopyshov.weatherwebapplication.common.BasicServlet;

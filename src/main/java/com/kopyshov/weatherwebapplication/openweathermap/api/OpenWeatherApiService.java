@@ -1,4 +1,4 @@
-package com.kopyshov.weatherwebapplication.openweathermap.api.services;
+package com.kopyshov.weatherwebapplication.openweathermap.api;
 
 import com.google.gson.Gson;
 import com.kopyshov.weatherwebapplication.openweathermap.api.currentweather.LocationWeatherData;

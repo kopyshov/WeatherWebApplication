@@ -1,5 +1,6 @@
 package com.kopyshov.weatherwebapplication.auth.entities;
 
+import com.kopyshov.weatherwebapplication.buisness.Location;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,6 +28,9 @@ public class UserData implements Serializable {
     private String password;
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     private Set<UserToken> userTokenTokens = new HashSet<>();
+
+    @ManyToMany
+    private Set<Location> added = new HashSet<>();
 
     public UserData(String username, String password) {
         this.username = username;
