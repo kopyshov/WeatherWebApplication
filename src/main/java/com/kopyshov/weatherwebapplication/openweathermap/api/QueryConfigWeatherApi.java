@@ -10,8 +10,9 @@ public class QueryConfigWeatherApi {
     public static final String APP_ID = System.getenv("WEATHER_APP_ID");
 
 
-    public static final String QUERY_GEO_PART = "geo/1.0/direct";
-
+    public static final String QUERY_GEO_PART = "geo/1.0/";
+    public static final String DIRECT_GEO = "direct";
+    public static final String REVERSE_GEO = "reverse";
 
     public static final String WEATHER_QUERY_PART = "data/2.5/weather";
     public static final String CITY_ID_EQUALS = "id=";

@@ -32,20 +32,25 @@ public class OpenWeatherApiService {
 
     public static URI buildUriRequestByCityName(String location) {
         GeoQueryBuilder builder = new GeoQueryBuilder();
-        String geoQuery = builder.buildGeoQuery(location);
+        String geoQuery = builder.buildDirectGeoQuery(location);
         return URI.create(geoQuery);
     }
 
-    public static URI buildUriRequestByCityId(double lan, double lon) {
-        WeatherQueryBuilder builder = new WeatherQueryBuilder();
-        String weatherQuery = builder.buildWeatherQuery(lan, lon);
-        return URI.create(weatherQuery);
+    public static LocationGeoData[] getLocationsByCoordinates(String latitude, String longitude) throws IOException, InterruptedException {
+        URI uri = buildUriRequestByCoordinates(latitude, longitude);
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(uri)
+                .GET().build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        String body = response.body();
+        LocationGeoData[] locationGeoData = gson.fromJson(body, LocationGeoData[].class);
+        return locationGeoData;
     }
 
-    public static URI buildUriRequestByCityId(String cityID) {
-        WeatherQueryBuilder builder = new WeatherQueryBuilder();
-        String weatherQuery = builder.buildWeatherQuery(cityID);
-        return URI.create(weatherQuery);
+    public static URI buildUriRequestByCoordinates(String latitude, String longitude) {
+        GeoQueryBuilder builder = new GeoQueryBuilder();
+        String geoQuery = builder.buildReverseGeoQuery(latitude, longitude);
+        return URI.create(geoQuery);
     }
 
     public static List<LocationWeatherData> getWeatherDataByCityName(String cityName) throws IOException, InterruptedException {
@@ -54,7 +59,7 @@ public class OpenWeatherApiService {
         for (LocationGeoData loc : locations) {
             double latitude = Math.round(loc.getLat() * 100.0) / 100.0;
             double longitude = Math.round(loc.getLon() * 100.0) / 100.0;
-            URI uri = buildUriRequestByCityId(latitude, longitude);
+            URI uri = buildUriRequestByCoordinates(latitude, longitude);
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(uri)
                     .GET().build();
@@ -63,5 +68,10 @@ public class OpenWeatherApiService {
             weatherData.add(locationWeatherData);
         }
         return weatherData;
+    }
+    public static URI buildUriRequestByCoordinates(double lan, double lon) {
+        WeatherQueryBuilder builder = new WeatherQueryBuilder();
+        String weatherQuery = builder.buildWeatherQuery(lan, lon);
+        return URI.create(weatherQuery);
     }
 }

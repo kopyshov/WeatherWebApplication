@@ -2,8 +2,8 @@ package com.kopyshov.weatherwebapplication.auth.entities;
 
 import com.kopyshov.weatherwebapplication.buisness.Location;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.transaction.Transactional;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -11,7 +11,8 @@ import java.util.Set;
 
 @Entity
 @Table
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @org.hibernate.annotations.NamedQuery(
         name = "findByUsernameAndPass",
@@ -20,6 +21,7 @@ import java.util.Set;
 public class UserData implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long id;
 
     @Column(nullable = false, unique = true, updatable = false)
@@ -27,13 +29,36 @@ public class UserData implements Serializable {
     @Column(nullable = false)
     private String password;
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
-    private Set<UserToken> userTokenTokens = new HashSet<>();
+    @EqualsAndHashCode.Exclude
+    private Set<UserToken> userTokens = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @JoinTable(name = "userdata_location",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "location_id"))
     private Set<Location> added = new HashSet<>();
 
     public UserData(String username, String password) {
         this.username = username;
         this.password = password;
+    }
+
+    @Override
+    public int hashCode() {
+        return 17;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        UserData other = (UserData) obj;
+        return username != null && username.equals(other.getUsername());
     }
 }

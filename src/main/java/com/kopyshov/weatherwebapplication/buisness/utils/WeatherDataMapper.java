@@ -11,6 +11,7 @@ public class WeatherDataMapper {
         List<RepresentationWeatherData> dataList = new ArrayList<>();
         for (LocationWeatherData dt : data) {
             dataList.add(RepresentationWeatherData.builder()
+                    .coord(dt.getCoord())
                     .name(dt.getName())
                     .dt(dt.getDt())
                     .weather(dt.getWeather())

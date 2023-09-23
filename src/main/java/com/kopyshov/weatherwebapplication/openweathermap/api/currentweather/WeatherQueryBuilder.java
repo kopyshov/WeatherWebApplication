@@ -18,13 +18,4 @@ public class WeatherQueryBuilder {
                .append(METRIC_UNITS);
         return builder.toString();
     }
-
-    public String buildWeatherQuery(String id) {
-        StringBuilder builder = new StringBuilder(baseUrl);
-        builder.append(QUESTION_MARK)
-                .append(CITY_ID_EQUALS).append(id).append(AND)
-                .append(APP_ID_EQUALS).append(APP_ID).append(AND)
-                .append(METRIC_UNITS);
-        return builder.toString();
-    }
 }

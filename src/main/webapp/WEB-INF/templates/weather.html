@@ -7,6 +7,11 @@
 </head>
 <body>
     <div th:replace="~{/components/header-component}"></div>
+    <div class="container-header">
+        <div th:each="loc : ${locations}">
+            <div th:text="${loc.getName()}"></div>
+        </div>
+    </div>
 <!--    <div th:replace="~{saved-component}">Тег отражается если сохранены города</div>-->
 <!--    <div th:replace="~{footer-component}">Копышовы</div>-->
 </body>
