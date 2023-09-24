@@ -2,11 +2,12 @@ package com.kopyshov.weatherwebapplication.auth.entities;
 
 import com.kopyshov.weatherwebapplication.buisness.Location;
 import jakarta.persistence.*;
-import jakarta.transaction.Transactional;
 import lombok.*;
+import org.hibernate.annotations.Cascade;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -32,13 +33,20 @@ public class UserData implements Serializable {
     @EqualsAndHashCode.Exclude
     private Set<UserToken> userTokens = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(name = "userdata_location",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "location_id"))
+            joinColumns = @JoinColumn(name = "userdata_id", referencedColumnName = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "location_id", referencedColumnName = "location_id")
+    )
     private Set<Location> added = new HashSet<>();
+
+    public void addLocation(Location location) {
+        added.add(location);
+    }
+
+    public void removeLocation(Location location) {
+        added.remove(location);
+    }
 
     public UserData(String username, String password) {
         this.username = username;
@@ -47,7 +55,7 @@ public class UserData implements Serializable {
 
     @Override
     public int hashCode() {
-        return 17;
+        return Objects.hashCode(username);
     }
 
     @Override

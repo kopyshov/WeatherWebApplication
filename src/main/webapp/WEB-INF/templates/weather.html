@@ -10,6 +10,10 @@
     <div class="container-header">
         <div th:each="loc : ${locations}">
             <div th:text="${loc.getName()}"></div>
+            <form th:action="@{/weather}" method="post">
+                <input type="hidden" name="location" th:value="${loc.getId()}">
+                <input type="submit" value="Delete">
+            </form>
         </div>
     </div>
 <!--    <div th:replace="~{saved-component}">Тег отражается если сохранены города</div>-->

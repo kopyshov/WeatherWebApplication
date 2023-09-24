@@ -9,8 +9,7 @@ public enum LocationDAO {
     public void save(Location location) throws PersistenceException {
         try (Session session = HibernateUtil.INSTANCE.getSessionFactory().openSession()) {
             session.getTransaction().begin();
-            session.persist(location);
-            session.flush();
+            session.merge(location);
             session.getTransaction().commit();
         }
     }

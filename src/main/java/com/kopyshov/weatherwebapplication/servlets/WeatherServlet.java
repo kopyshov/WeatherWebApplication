@@ -22,7 +22,6 @@ public class WeatherServlet extends BasicServlet {
             UserData userData = UserDAO.INSTANCE.findById(user.getId());
             if (userData != null) {
                 Set<Location> added = userData.getAdded();
-                System.out.println(added);
                 context.setVariable("user", userData);
                 context.setVariable("locations", added);
             }
@@ -32,6 +31,10 @@ public class WeatherServlet extends BasicServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
+        HttpSession session = request.getSession();
+        UserData user = (UserData) session.getAttribute("loggedUser");
+        String locationId = request.getParameter("location");
+        UserDAO.INSTANCE.removeLocationFromUser(user, locationId);
+        response.sendRedirect(request.getContextPath() + "/weather");
     }
 }

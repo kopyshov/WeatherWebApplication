@@ -1,25 +1,33 @@
 package com.kopyshov.weatherwebapplication.buisness;
 
+import com.kopyshov.weatherwebapplication.auth.entities.UserData;
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.NaturalId;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table
 @Getter
 @Setter
 @NoArgsConstructor
+@org.hibernate.annotations.NamedQuery(
+        name = "findByCoordinates",
+        query = "from Location where latitude = :latitude AND longitude = :longitude"
+)
 public class Location implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "location_id")
     private Long id;
     private String name;
+
     @NaturalId
     @Column(nullable = false)
     private String latitude;
@@ -27,9 +35,10 @@ public class Location implements Serializable {
     @Column(nullable = false)
     private String longitude;
 
+
     @Override
     public int hashCode() {
-        return 13;
+        return Objects.hash(latitude, longitude);
     }
 
     @Override

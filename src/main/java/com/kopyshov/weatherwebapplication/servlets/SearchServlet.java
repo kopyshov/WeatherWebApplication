@@ -51,6 +51,7 @@ public class SearchServlet extends BasicServlet {
         try {
             LocationGeoData[] locationsByCoordinates = OpenWeatherApiService.getLocationsByCoordinates(latitude, longitude);
             LocationGeoData foundedLocation = locationsByCoordinates[0];
+
             Location location = new Location();
             location.setName(foundedLocation.getName());
             location.setLatitude(foundedLocation.getLat().toString());

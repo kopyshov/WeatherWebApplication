@@ -2,6 +2,7 @@ package com.kopyshov.weatherwebapplication.auth.dao;
 
 import com.kopyshov.weatherwebapplication.auth.entities.UserData;
 import com.kopyshov.weatherwebapplication.buisness.Location;
+import com.kopyshov.weatherwebapplication.buisness.LocationDAO;
 import com.kopyshov.weatherwebapplication.utils.HibernateUtil;
 import jakarta.persistence.PersistenceException;
 import jakarta.transaction.Transactional;
@@ -41,7 +42,26 @@ public enum UserDAO {
         try (Session session = HibernateUtil.INSTANCE.getSessionFactory().openSession()) {
             session.getTransaction().begin();
             UserData userData = session.find(UserData.class, user.getId());
-            userData.getAdded().add(location);
+            Query<Location> query = session.createNamedQuery("findByCoordinates", Location.class);
+            query.setParameter("latitude", location.getLatitude());
+            query.setParameter("longitude", location.getLongitude());
+            Optional<Location> fLocation = query.uniqueResultOptional();
+            if (fLocation.isPresent()) {
+                userData.addLocation(fLocation.get());
+            } else {
+                userData.addLocation(location);
+            }
+            session.merge(userData);
+            session.getTransaction().commit();
+        }
+    }
+
+    public void removeLocationFromUser(UserData user, String locationId) throws PersistenceException, ConstraintViolationException {
+        try (Session session = HibernateUtil.INSTANCE.getSessionFactory().openSession()) {
+            session.getTransaction().begin();
+            UserData userData = session.find(UserData.class, user.getId());
+            Location location = session.find(Location.class, locationId);
+            userData.removeLocation(location);
             session.merge(userData);
             session.getTransaction().commit();
         }
