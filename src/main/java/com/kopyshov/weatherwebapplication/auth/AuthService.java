@@ -1,8 +1,8 @@
 package com.kopyshov.weatherwebapplication.auth;
 
-import com.kopyshov.weatherwebapplication.auth.dao.UserTokenDAO;
-import com.kopyshov.weatherwebapplication.auth.entities.UserData;
-import com.kopyshov.weatherwebapplication.auth.entities.UserToken;
+import com.kopyshov.weatherwebapplication.common.dao.UserTokenDAO;
+import com.kopyshov.weatherwebapplication.common.entities.UserData;
+import com.kopyshov.weatherwebapplication.common.entities.UserToken;
 import com.kopyshov.weatherwebapplication.auth.utils.HashGenerator;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,10 +1,12 @@
 package com.kopyshov.weatherwebapplication.listeners;
 
 import com.kopyshov.weatherwebapplication.utils.ThymeleafUtil;
-import jakarta.servlet.*;
-import jakarta.servlet.http.*;
-import jakarta.servlet.annotation.*;
-import lombok.extern.slf4j.Slf4j;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletContextEvent;
+import jakarta.servlet.ServletContextListener;
+import jakarta.servlet.annotation.WebListener;
+import jakarta.servlet.http.HttpSessionAttributeListener;
+import jakarta.servlet.http.HttpSessionListener;
 import org.thymeleaf.TemplateEngine;
 
 @WebListener

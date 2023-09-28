@@ -1,8 +1,9 @@
-import com.kopyshov.weatherwebapplication.auth.dao.UserDAO;
-import com.kopyshov.weatherwebapplication.auth.entities.UserData;
-import com.kopyshov.weatherwebapplication.buisness.Location;
+import com.kopyshov.weatherwebapplication.common.dao.UserDAO;
+import com.kopyshov.weatherwebapplication.common.entities.UserData;
+import com.kopyshov.weatherwebapplication.common.entities.Location;
+import com.kopyshov.weatherwebapplication.common.dao.LocationDAO;
 import com.kopyshov.weatherwebapplication.openweathermap.api.OpenWeatherApiService;
-import com.kopyshov.weatherwebapplication.openweathermap.api.geo.LocationGeoData;
+import com.kopyshov.weatherwebapplication.openweathermap.api.in.dto.LocationGeoData;
 import org.junit.jupiter.api.Test;
 
 import java.net.URI;
@@ -42,6 +43,6 @@ public class WeatherTest {
         location.setLatitude(foundedLocation.getLat().toString());
         location.setLongitude(foundedLocation.getLon().toString());
 
-        UserDAO.INSTANCE.addLocationToUser(_user1, location);
+        LocationDAO.INSTANCE.addLocationToUser(_user1, location);
     }
 }

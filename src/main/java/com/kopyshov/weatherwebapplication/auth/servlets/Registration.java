@@ -1,7 +1,7 @@
 package com.kopyshov.weatherwebapplication.auth.servlets;
 
-import com.kopyshov.weatherwebapplication.auth.dao.UserDAO;
-import com.kopyshov.weatherwebapplication.auth.entities.UserData;
+import com.kopyshov.weatherwebapplication.common.dao.UserDAO;
+import com.kopyshov.weatherwebapplication.common.entities.UserData;
 import jakarta.persistence.PersistenceException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;

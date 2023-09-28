@@ -1,10 +1,10 @@
 package com.kopyshov.weatherwebapplication.openweathermap.api;
 
 import com.google.gson.Gson;
-import com.kopyshov.weatherwebapplication.openweathermap.api.currentweather.LocationWeatherData;
-import com.kopyshov.weatherwebapplication.openweathermap.api.currentweather.WeatherQueryBuilder;
-import com.kopyshov.weatherwebapplication.openweathermap.api.geo.GeoQueryBuilder;
-import com.kopyshov.weatherwebapplication.openweathermap.api.geo.LocationGeoData;
+import com.kopyshov.weatherwebapplication.openweathermap.api.in.dto.LocationWeatherData;
+import com.kopyshov.weatherwebapplication.openweathermap.api.in.querybuilders.WeatherQueryBuilder;
+import com.kopyshov.weatherwebapplication.openweathermap.api.in.querybuilders.GeoQueryBuilder;
+import com.kopyshov.weatherwebapplication.openweathermap.api.in.dto.LocationGeoData;
 
 import java.io.IOException;
 import java.net.URI;
@@ -25,8 +25,7 @@ public class OpenWeatherApiService {
                 .GET().build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         String body = response.body();
-        LocationGeoData[] locationGeoData = gson.fromJson(body, LocationGeoData[].class);
-        return locationGeoData;
+        return gson.fromJson(body, LocationGeoData[].class);
     }
 
 
@@ -43,8 +42,7 @@ public class OpenWeatherApiService {
                 .GET().build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         String body = response.body();
-        LocationGeoData[] locationGeoData = gson.fromJson(body, LocationGeoData[].class);
-        return locationGeoData;
+        return gson.fromJson(body, LocationGeoData[].class);
     }
 
     public static URI buildUriRequestByCoordinates(String latitude, String longitude) {
