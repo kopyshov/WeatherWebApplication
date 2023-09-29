@@ -9,8 +9,11 @@ import java.util.Map;
 public interface MappingCookies {
     default Map<String, String> mapCookies(HttpServletRequest request) {
         Map<String, String> cookies = new HashMap<>();
-        for (Cookie aCookie : request.getCookies()) {
-            cookies.put(aCookie.getName(), aCookie.getValue());
+        Cookie[] requestCookies = request.getCookies();
+        if (requestCookies != null) {
+            for (Cookie aCookie : requestCookies) {
+                cookies.put(aCookie.getName(), aCookie.getValue());
+            }
         }
         return cookies;
     }

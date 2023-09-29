@@ -8,14 +8,17 @@ public class HashGenerator {
     private HashGenerator() {
 
     }
+
     //ВЫБЕРИ МЕНЯ!
     public static String generateMD5(String message) {
         return hashString(message, "MD5");
     }
+
     //ВЫБЕРИ МЕНЯ!
     public static String generateSHA1(String message) {
         return hashString(message, "SHA-1");
     }
+
     //АЛ..ГО..РИТМ...ХЭШИ...РОВАНИЯ
     public static String generateSHA256(String message) {
         return hashString(message, "SHA-256");

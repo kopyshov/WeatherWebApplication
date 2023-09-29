@@ -9,12 +9,17 @@
   <div th:replace="~{components/header-component}"></div>
   <div class="container-header">
     <div th:each="loc : ${data}">
-      <div th:text="${loc.getName()}"></div>
-      <div th:text="${loc.getDt()}"></div>
-      <div th:text="${loc.getWeather()}"></div>
+      <div th:text="${loc.getKey().localName()}"></div>
+      <div th:text="${loc.getKey().state()}"></div>
+      <div th:text="${loc.getKey().country()}"></div>
+      <div></div>
+      <div th:text="${loc.getValue().dt()}"></div>
+      <div th:text="${loc.getValue().main().getTemp()}"></div>
+      <div th:text="${loc.getValue().main().getPressure()}"></div>
+      <div th:text="${loc.getValue().main().getHumidity()}"></div>
       <form th:action="@{/search}" method="post">
-        <input type="hidden" name="latitude" th:value="${loc.getCoord().getLat()}">
-        <input type="hidden" name="longitude" th:value="${loc.getCoord().getLon()}">
+        <input type="hidden" name="latitude" th:value="${loc.getKey().latitude()}">
+        <input type="hidden" name="longitude" th:value="${loc.getKey().longitude()}">
         <input type="submit" value="Add">
       </form>
     </div>

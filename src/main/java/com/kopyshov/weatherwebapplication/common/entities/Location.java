@@ -27,10 +27,10 @@ public class Location implements Serializable {
 
     @NaturalId
     @Column(nullable = false)
-    private String latitude;
+    private double latitude;
     @NaturalId
     @Column(nullable = false)
-    private String longitude;
+    private double longitude;
 
 
     @Override
@@ -47,7 +47,7 @@ public class Location implements Serializable {
         if (getClass() != obj.getClass())
             return false;
         Location other = (Location) obj;
-        return latitude != null && latitude.equals(other.getLatitude())
-                && longitude !=null && longitude.equals(other.getLongitude());
+        return latitude != 0.0 && latitude == other.getLatitude()
+                && longitude != 0.0 && longitude == other.getLongitude();
     }
 }

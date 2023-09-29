@@ -1,17 +1,19 @@
 package com.kopyshov.weatherwebapplication.openweathermap.api.in.dto;
 
 import com.google.gson.annotations.SerializedName;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Map;
 
-@Data
+@Getter
+@Setter
 public class LocationGeoData {
     private String name;
     @SerializedName("local_names")
     private Map<String, String> localNames;
-    private Double lat;
-    private Double lon;
+    private double lat;
+    private double lon;
     private String country;
     private String state;
 }

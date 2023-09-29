@@ -1,8 +1,8 @@
 package com.kopyshov.weatherwebapplication.utils;
 
+import com.kopyshov.weatherwebapplication.common.entities.Location;
 import com.kopyshov.weatherwebapplication.common.entities.UserData;
 import com.kopyshov.weatherwebapplication.common.entities.UserToken;
-import com.kopyshov.weatherwebapplication.common.entities.Location;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
@@ -20,6 +20,7 @@ public enum HibernateUtil {
         }
         return sessionFactory;
     }
+
     public void shutdown() {
         sessionFactory.close();
     }

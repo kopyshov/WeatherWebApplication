@@ -3,7 +3,6 @@ package com.kopyshov.weatherwebapplication.openweathermap.api.in.dto;
 import com.google.gson.annotations.JsonAdapter;
 import com.kopyshov.weatherwebapplication.openweathermap.api.in.dto.entities.*;
 import com.kopyshov.weatherwebapplication.openweathermap.api.in.dto.gson.SecondsDateTypeAdapter;
-import com.kopyshov.weatherwebapplication.openweathermap.api.in.entities.*;
 import lombok.Data;
 
 import java.util.Date;

@@ -1,21 +1,20 @@
 package com.kopyshov.weatherwebapplication.openweathermap.api.servlets;
 
-import com.kopyshov.weatherwebapplication.common.entities.UserData;
-import com.kopyshov.weatherwebapplication.common.entities.Location;
-import com.kopyshov.weatherwebapplication.common.dao.LocationDAO;
-import com.kopyshov.weatherwebapplication.openweathermap.api.out.RepresentationWeatherData;
-import com.kopyshov.weatherwebapplication.openweathermap.api.out.WeatherDataMapper;
 import com.kopyshov.weatherwebapplication.BasicServlet;
+import com.kopyshov.weatherwebapplication.common.dao.LocationDAO;
+import com.kopyshov.weatherwebapplication.common.entities.Location;
+import com.kopyshov.weatherwebapplication.common.entities.UserData;
 import com.kopyshov.weatherwebapplication.openweathermap.api.OpenWeatherApiService;
-import com.kopyshov.weatherwebapplication.openweathermap.api.in.dto.LocationWeatherData;
 import com.kopyshov.weatherwebapplication.openweathermap.api.in.dto.LocationGeoData;
+import com.kopyshov.weatherwebapplication.openweathermap.api.out.RepresentationGeoData;
+import com.kopyshov.weatherwebapplication.openweathermap.api.out.RepresentationWeatherData;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.Map;
 
 @WebServlet({"/search"})
 public class SearchServlet extends BasicServlet {
@@ -28,14 +27,14 @@ public class SearchServlet extends BasicServlet {
         }
         try {
             String location = request.getParameter("location");
-            List<LocationWeatherData> locations = OpenWeatherApiService.getWeatherDataByCityName(location);
-            List<RepresentationWeatherData> data = WeatherDataMapper.mapToWeatherNecessaryInfo(locations);
-            context.setVariable("data", data);
+            Map<RepresentationGeoData, RepresentationWeatherData> weatherData = OpenWeatherApiService.getWeatherDataByCityName(location);
+            context.setVariable("data", weatherData);
             templateEngine.process("search", context, response.getWriter());
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
@@ -45,16 +44,15 @@ public class SearchServlet extends BasicServlet {
             return;
         }
 
-        String latitude = request.getParameter("latitude");
-        String longitude = request.getParameter("longitude");
+        double latitude = Double.parseDouble(request.getParameter("latitude"));
+        double longitude = Double.parseDouble(request.getParameter("longitude"));
         try {
-            LocationGeoData[] locationsByCoordinates = OpenWeatherApiService.getLocationsByCoordinates(latitude, longitude);
-            LocationGeoData foundedLocation = locationsByCoordinates[0];
+            LocationGeoData locationByCoordinates = OpenWeatherApiService.getLocationsByCoordinates(latitude, longitude);
 
             Location location = new Location();
-            location.setName(foundedLocation.getName());
-            location.setLatitude(foundedLocation.getLat().toString());
-            location.setLongitude(foundedLocation.getLon().toString());
+            location.setName(locationByCoordinates.getName());
+            location.setLatitude(locationByCoordinates.getLat());
+            location.setLongitude(locationByCoordinates.getLon());
 
             LocationDAO.INSTANCE.addLocationToUser(user, location);
 

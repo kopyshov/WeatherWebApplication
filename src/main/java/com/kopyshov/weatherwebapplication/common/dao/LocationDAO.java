@@ -1,7 +1,7 @@
 package com.kopyshov.weatherwebapplication.common.dao;
 
-import com.kopyshov.weatherwebapplication.common.entities.UserData;
 import com.kopyshov.weatherwebapplication.common.entities.Location;
+import com.kopyshov.weatherwebapplication.common.entities.UserData;
 import com.kopyshov.weatherwebapplication.utils.HibernateUtil;
 import jakarta.persistence.PersistenceException;
 import org.hibernate.Session;
@@ -12,6 +12,7 @@ import java.util.Optional;
 
 public enum LocationDAO {
     INSTANCE;
+
     public void addLocationToUser(UserData user, Location location) throws PersistenceException, ConstraintViolationException {
         try (Session session = HibernateUtil.INSTANCE.getSessionFactory().openSession()) {
             session.getTransaction().begin();

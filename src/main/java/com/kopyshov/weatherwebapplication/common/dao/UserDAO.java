@@ -11,6 +11,7 @@ import java.util.Optional;
 
 public enum UserDAO {
     INSTANCE;
+
     public Optional<UserData> find(String username, String password) {
         try (Session session = HibernateUtil.INSTANCE.getSessionFactory().openSession()) {
             Query<UserData> query = session.createNamedQuery("findByUsernameAndPass", UserData.class);

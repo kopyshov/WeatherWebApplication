@@ -1,6 +1,5 @@
 package com.kopyshov.weatherwebapplication;
 
-import com.kopyshov.weatherwebapplication.BasicServlet;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;

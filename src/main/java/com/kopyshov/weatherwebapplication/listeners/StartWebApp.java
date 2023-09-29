@@ -14,6 +14,7 @@ public class StartWebApp implements ServletContextListener, HttpSessionListener,
 
     public StartWebApp() {
     }
+
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         ServletContext servletContext = sce.getServletContext();

@@ -8,16 +8,18 @@ import static com.kopyshov.weatherwebapplication.openweathermap.api.QueryConfigW
 public class GeoQueryBuilder {
 
     private final String baseUrl;
+
     public GeoQueryBuilder() {
         baseUrl = API_URL + QUERY_GEO_PART;
     }
+
     public String buildDirectGeoQuery(String cityName) {
         StringBuilder builder = new StringBuilder(baseUrl);
         builder.append(DIRECT_GEO)
                 .append(QUESTION_MARK)
                 .append(CITY_NAME_IS).append(URLEncoder.encode(cityName, StandardCharsets.UTF_8)).append(AND)
-               .append(LIMIT).append(AND)
-               .append(APP_ID_EQUALS).append(APP_ID);
+                .append(LIMIT).append(AND)
+                .append(APP_ID_EQUALS).append(APP_ID);
         return builder.toString();
     }
 

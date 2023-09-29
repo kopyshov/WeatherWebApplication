@@ -9,6 +9,7 @@ import java.util.Optional;
 
 public enum UserTokenDAO {
     INSTANCE;
+
     public void save(UserToken token) {
         try (Session session = HibernateUtil.INSTANCE.getSessionFactory().openSession()) {
             session.getTransaction().begin();
