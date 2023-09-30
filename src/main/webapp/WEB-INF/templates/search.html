@@ -10,6 +10,11 @@
   <div class="container-header">
     <div th:each="loc : ${data}">
       <div th:replace="~{/components/card-component}"></div>
+      <form th:action="@{/search}" method="post">
+        <input type="hidden" name="latitude" th:value="${loc.getKey().latitude()}">
+        <input type="hidden" name="longitude" th:value="${loc.getKey().longitude()}">
+        <input type="submit" value="Add">
+      </form>
     </div>
   </div>
 </body>
