@@ -23,9 +23,9 @@ public class WeatherService {
             double latitude = location.getLatitude();
             double longitude = location.getLongitude();
             List<LocationGeoData> locationGeoData = OpenWeatherApiService.getGeoData(latitude, longitude);
-            List<LocationWeatherData> weatherData = getWeatherData(locationGeoData.get(0));
+            LocationWeatherData weatherData = getWeatherData(locationGeoData.get(0));
             GeoData geoData = WeatherMapper.INSTANCE.toDto(locationGeoData.get(0));
-            WeatherData weatherDataLocation = WeatherMapper.INSTANCE.toDto(weatherData.get(0));
+            WeatherData weatherDataLocation = WeatherMapper.INSTANCE.toDto(weatherData);
             data.put(geoData, weatherDataLocation);
         }
         return data;
@@ -35,8 +35,8 @@ public class WeatherService {
         List<LocationGeoData> locations = OpenWeatherApiService.getGeoData(locationName);
         for (LocationGeoData locationGeoData : locations) {
             GeoData geoData = WeatherMapper.INSTANCE.toDto(locationGeoData);
-            List<LocationWeatherData> weatherData = getWeatherData(locationGeoData);
-            WeatherData currentWeather = WeatherMapper.INSTANCE.toDto(weatherData.get(0));
+            LocationWeatherData weatherData = getWeatherData(locationGeoData);
+            WeatherData currentWeather = WeatherMapper.INSTANCE.toDto(weatherData);
             data.put(geoData, currentWeather);
         }
         return data;
