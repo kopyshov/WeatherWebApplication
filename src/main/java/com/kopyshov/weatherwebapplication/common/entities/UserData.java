@@ -30,11 +30,11 @@ public class UserData implements Serializable {
     private String username;
     @Column(nullable = false)
     private String password;
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @EqualsAndHashCode.Exclude
     private Set<UserToken> userTokens = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(name = "userdata_location",
             joinColumns = @JoinColumn(name = "userdata_id", referencedColumnName = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "location_id", referencedColumnName = "location_id")

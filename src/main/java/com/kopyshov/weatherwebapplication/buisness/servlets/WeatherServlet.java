@@ -1,5 +1,6 @@
 package com.kopyshov.weatherwebapplication.buisness.servlets;
 
+import com.kopyshov.weatherwebapplication.buisness.WeatherService;
 import com.kopyshov.weatherwebapplication.common.BasicServlet;
 import com.kopyshov.weatherwebapplication.common.dao.LocationDAO;
 import com.kopyshov.weatherwebapplication.common.dao.UserDAO;
@@ -7,7 +8,6 @@ import com.kopyshov.weatherwebapplication.common.entities.Location;
 import com.kopyshov.weatherwebapplication.common.entities.UserData;
 import com.kopyshov.weatherwebapplication.openweathermap.api.out.GeoData;
 import com.kopyshov.weatherwebapplication.openweathermap.api.out.WeatherData;
-import com.kopyshov.weatherwebapplication.buisness.WeatherService;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

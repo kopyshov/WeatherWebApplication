@@ -22,9 +22,9 @@ public class LoginFilter implements Filter, MappingCookies {
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest request = (HttpServletRequest) req;
         request.setAttribute("rememberMe", false);
-
+        boolean loggedIn = request.getSession().getAttribute("loggedUser") == null;
         Map<String, String> cookies = mapCookies(request);
-        if (!cookies.isEmpty()) { //если есть куки
+        if (!loggedIn && !cookies.isEmpty()) { //если есть куки
             if (cookies.containsKey("selector") && cookies.containsKey("validator")) { //в куки есть токен?
                 Optional<UserToken> savedToken = UserTokenDAO.INSTANCE.findBySelector(cookies.get("selector"));
                 if (savedToken.isPresent()) { //есть ли Token в БД

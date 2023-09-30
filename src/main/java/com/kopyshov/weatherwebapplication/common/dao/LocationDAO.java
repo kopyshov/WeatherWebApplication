@@ -2,7 +2,6 @@ package com.kopyshov.weatherwebapplication.common.dao;
 
 import com.kopyshov.weatherwebapplication.common.entities.Location;
 import com.kopyshov.weatherwebapplication.common.entities.UserData;
-import com.kopyshov.weatherwebapplication.openweathermap.api.in.dto.entities.Coordinates;
 import com.kopyshov.weatherwebapplication.utils.HibernateUtil;
 import jakarta.persistence.PersistenceException;
 import org.hibernate.Session;

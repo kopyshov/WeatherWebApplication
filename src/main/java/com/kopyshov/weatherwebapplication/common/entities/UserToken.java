@@ -20,7 +20,7 @@ public class UserToken implements Serializable {
     private Long id;
     private String selector;
     private String validator;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
     private UserData user;
 

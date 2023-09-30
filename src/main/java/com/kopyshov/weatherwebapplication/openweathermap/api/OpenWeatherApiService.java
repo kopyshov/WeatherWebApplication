@@ -6,7 +6,6 @@ import com.kopyshov.weatherwebapplication.openweathermap.api.in.dto.LocationGeoD
 import com.kopyshov.weatherwebapplication.openweathermap.api.in.dto.LocationWeatherData;
 import com.kopyshov.weatherwebapplication.openweathermap.api.in.querybuilders.GeoQueryBuilder;
 import com.kopyshov.weatherwebapplication.openweathermap.api.in.querybuilders.WeatherQueryBuilder;
-import com.kopyshov.weatherwebapplication.openweathermap.api.in.dto.LocationData;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -14,7 +13,6 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.ArrayList;
 import java.util.List;
 
 public class OpenWeatherApiService {
@@ -29,6 +27,12 @@ public class OpenWeatherApiService {
         URI uri = buildUriRequestLocationByCoordinates(latitude, longitude);
         return requestGeoDataToApi(uri);
     }
+    public static LocationWeatherData getWeatherData(LocationGeoData location) throws IOException, InterruptedException {
+        double latitude = location.getLat();
+        double longitude = location.getLon();
+        URI uri = buildUriRequestByCoordinates(latitude, longitude);
+        return requestWeatherDataToApi(uri);
+    }
     public static List<LocationGeoData> requestGeoDataToApi(URI uri) throws InterruptedException, IOException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(uri)
@@ -38,14 +42,6 @@ public class OpenWeatherApiService {
         Type listType = new TypeToken<List<LocationGeoData>>(){}.getType();
         return gson.fromJson(body, listType);
     }
-
-    public static LocationWeatherData getWeatherData(LocationGeoData location) throws IOException, InterruptedException {
-        double latitude = location.getLat();
-        double longitude = location.getLon();
-        URI uri = buildUriRequestByCoordinates(latitude, longitude);
-        return requestWeatherDataToApi(uri);
-    }
-
     private static LocationWeatherData requestWeatherDataToApi(URI uri) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(uri)
@@ -73,6 +69,4 @@ public class OpenWeatherApiService {
         String geoQuery = builder.buildReverseGeoQuery(latitude.toString(), longitude.toString());
         return URI.create(geoQuery);
     }
-
-
 }
