@@ -8,7 +8,7 @@ import java.util.Map;
 
 @Getter
 @Setter
-public class LocationGeoData {
+public class LocationGeoData extends LocationData {
     private String name;
     @SerializedName("local_names")
     private Map<String, String> localNames;

@@ -1,6 +1,6 @@
 package com.kopyshov.weatherwebapplication.auth.servlets;
 
-import com.kopyshov.weatherwebapplication.BasicServlet;
+import com.kopyshov.weatherwebapplication.common.BasicServlet;
 import com.kopyshov.weatherwebapplication.auth.AuthService;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;

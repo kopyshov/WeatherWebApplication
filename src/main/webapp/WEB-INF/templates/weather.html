@@ -9,19 +9,9 @@
     <div th:replace="~{/components/header-component}"></div>
     <div class="container-header">
         <div th:each="loc : ${data}">
-            <div th:text="${loc.getKey().localName()}"></div>
-            <div th:text="${loc.getKey().state()}"></div>
-            <div th:text="${loc.getKey().country()}"></div>
-            <div></div>
-            <div th:text="${loc.getValue().getDt()}"></div>
-            <div th:text="${loc.getValue().getWeather()}"></div>
-            <form th:action="@{/weather}" method="post">
-                <input type="hidden" name="location" th:value="${loc.getKey()}">
-                <input type="submit" value="Delete">
-            </form>
+            <div th:replace="~{/components/card-component}"></div>
         </div>
     </div>
-<!--    <div th:replace="~{saved-component}">Тег отражается если сохранены города</div>-->
 <!--    <div th:replace="~{footer-component}">Копышовы</div>-->
 </body>
 </html>

@@ -1,4 +1,4 @@
-package com.kopyshov.weatherwebapplication.listeners;
+package com.kopyshov.weatherwebapplication;
 
 import com.kopyshov.weatherwebapplication.utils.ThymeleafUtil;
 import jakarta.servlet.ServletContext;

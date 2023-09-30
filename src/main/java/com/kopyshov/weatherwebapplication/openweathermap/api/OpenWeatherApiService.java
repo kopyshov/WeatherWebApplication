@@ -6,9 +6,7 @@ import com.kopyshov.weatherwebapplication.openweathermap.api.in.dto.LocationGeoD
 import com.kopyshov.weatherwebapplication.openweathermap.api.in.dto.LocationWeatherData;
 import com.kopyshov.weatherwebapplication.openweathermap.api.in.querybuilders.GeoQueryBuilder;
 import com.kopyshov.weatherwebapplication.openweathermap.api.in.querybuilders.WeatherQueryBuilder;
-import com.kopyshov.weatherwebapplication.openweathermap.api.out.RepresentationGeoData;
-import com.kopyshov.weatherwebapplication.openweathermap.api.out.RepresentationWeatherData;
-import com.kopyshov.weatherwebapplication.openweathermap.api.out.WeatherMapper;
+import com.kopyshov.weatherwebapplication.openweathermap.api.in.dto.LocationData;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -17,58 +15,37 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class OpenWeatherApiService {
     private static final Gson gson = new Gson();
     private static final HttpClient client = HttpClient.newHttpClient();
 
-    public static Map<RepresentationGeoData, RepresentationWeatherData> getWeatherDataByCityName(String cityName) throws IOException, InterruptedException {
-        Map<RepresentationGeoData, RepresentationWeatherData> weatherData = new HashMap<>();
-        List<LocationGeoData> locations = getLocationsByCityName(cityName);
-        for (LocationGeoData locationGeoData : locations) {
-            LocationWeatherData locationWeatherData = getWeatherDataForLocation(locationGeoData);
-            RepresentationGeoData geoData = WeatherMapper.INSTANCE.toDto(locationGeoData);
-            RepresentationWeatherData currentWeather = WeatherMapper.INSTANCE.toDto(locationWeatherData);
-            weatherData.put(geoData, currentWeather);
-        }
-        return weatherData;
-    }
-
-    private static List<LocationGeoData> getLocationsByCityName(String locationName) throws IOException, InterruptedException {
+    public static List<LocationGeoData> getGeoData(String locationName) throws IOException, InterruptedException {
         URI uri = buildUriRequestByCityName(locationName);
+        return requestDataToApi(uri);
+    }
+
+    public static List<LocationGeoData> getGeoData(double latitude, double longitude) throws IOException, InterruptedException {
+        URI uri = buildUriRequestLocationByCoordinates(latitude, longitude);
+        return requestDataToApi(uri);
+    }
+
+    public static List<LocationWeatherData> getWeatherData(LocationGeoData location) throws IOException, InterruptedException {
+        double latitude = location.getLat();
+        double longitude = location.getLon();
+        URI uri = buildUriRequestByCoordinates(latitude, longitude);
+        return requestDataToApi(uri);
+    }
+
+    public static <T extends LocationData> List<T> requestDataToApi(URI uri) throws InterruptedException, IOException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(uri)
                 .GET().build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         String body = response.body();
-        Type listType = new TypeToken<ArrayList<LocationGeoData>>(){}.getType();
+        Type listType = new TypeToken<ArrayList<LocationData>>(){}.getType();
         return gson.fromJson(body, listType);
-    }
-
-    public static LocationWeatherData getWeatherDataForLocation(LocationGeoData location) throws IOException, InterruptedException {
-        double latitude = location.getLat(); //Math.round(location.getLat() * 100.0) / 100.0;
-        double longitude = location.getLon(); // Math.round(location.getLon() * 100.0) / 100.0;
-        URI uri = buildUriRequestByCoordinates(latitude, longitude);
-        HttpRequest requestToApi = HttpRequest.newBuilder()
-                .uri(uri)
-                .GET().build();
-        HttpResponse<String> response = client.send(requestToApi, HttpResponse.BodyHandlers.ofString());
-        return gson.fromJson(response.body(), LocationWeatherData.class);
-    }
-
-    public static LocationGeoData getLocationsByCoordinates(double latitude, double longitude) throws IOException, InterruptedException {
-        URI uri = buildUriRequestByCoordinates(latitude, longitude);
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(uri)
-                .GET().build();
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        String body = response.body();
-        Type listType = new TypeToken<ArrayList<LocationGeoData>>(){}.getType();
-        List<LocationGeoData> locationGeoData = gson.fromJson(body, listType);
-        return locationGeoData.get(0);
     }
 
     public static URI buildUriRequestByCoordinates(double lan, double lon) {
@@ -83,9 +60,11 @@ public class OpenWeatherApiService {
         return URI.create(geoQuery);
     }
 
-    private static URI buildUriRequestByCoordinates(String latitude, String longitude) {
+    private static URI buildUriRequestLocationByCoordinates(Double latitude, Double longitude) {
         GeoQueryBuilder builder = new GeoQueryBuilder();
-        String geoQuery = builder.buildReverseGeoQuery(latitude, longitude);
+        String geoQuery = builder.buildReverseGeoQuery(latitude.toString(), longitude.toString());
         return URI.create(geoQuery);
     }
+
+
 }

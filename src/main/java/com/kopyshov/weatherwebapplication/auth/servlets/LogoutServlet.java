@@ -13,9 +13,7 @@ public class LogoutServlet extends AuthServlet implements MappingCookies {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Map<String, String> cookies = mapCookies(request);
-        if (cookies.containsKey("selector")) {
-            authService.closeAccess(cookies.get("selector"), request, response);
-        }
-        response.sendRedirect(request.getContextPath() + "/login");
+        authService.closeAccess(cookies.get("selector"), request, response);
+        response.sendRedirect(request.getContextPath() + "/weather");
     }
 }

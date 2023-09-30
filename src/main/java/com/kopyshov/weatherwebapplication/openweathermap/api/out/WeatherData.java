@@ -4,7 +4,7 @@ import com.kopyshov.weatherwebapplication.openweathermap.api.in.dto.entities.Mai
 
 import java.util.Date;
 
-public record RepresentationWeatherData(
+public record WeatherData(
         Main main,
         Date dt
 ) {

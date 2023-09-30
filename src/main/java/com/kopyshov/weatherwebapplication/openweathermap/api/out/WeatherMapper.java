@@ -20,7 +20,7 @@ public interface WeatherMapper {
             @Mapping(target = "country", source = "country"),
             @Mapping(target = "state", source = "state")
     })
-    RepresentationGeoData toDto(LocationGeoData entity);
+    GeoData toDto(LocationGeoData entity);
 
     @Named("getLocalName")
     public static String getLocalName(LocationGeoData entity) {
@@ -31,5 +31,5 @@ public interface WeatherMapper {
             @Mapping(target = "main", source = "main"),
             @Mapping(target = "dt", source = "dt")
     })
-    RepresentationWeatherData toDto(LocationWeatherData entity);
+    WeatherData toDto(LocationWeatherData entity);
 }

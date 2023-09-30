@@ -6,7 +6,6 @@ import com.kopyshov.weatherwebapplication.common.entities.UserToken;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -22,13 +21,10 @@ public class LoginFilter implements Filter, MappingCookies {
     @Override
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest request = (HttpServletRequest) req;
-        HttpSession session = request.getSession(false);
-        boolean loggedIn = session != null && session.getAttribute("loggedUser") != null;
         request.setAttribute("rememberMe", false);
 
         Map<String, String> cookies = mapCookies(request);
-
-        if (!loggedIn && !cookies.isEmpty()) { //если не залогирован и есть куки
+        if (!cookies.isEmpty()) { //если есть куки
             if (cookies.containsKey("selector") && cookies.containsKey("validator")) { //в куки есть токен?
                 Optional<UserToken> savedToken = UserTokenDAO.INSTANCE.findBySelector(cookies.get("selector"));
                 if (savedToken.isPresent()) { //есть ли Token в БД

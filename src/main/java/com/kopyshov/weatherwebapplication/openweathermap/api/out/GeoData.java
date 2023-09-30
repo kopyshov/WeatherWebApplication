@@ -1,6 +1,6 @@
 package com.kopyshov.weatherwebapplication.openweathermap.api.out;
 
-public record RepresentationGeoData(
+public record GeoData(
         String name,
         String localName,
         String country,

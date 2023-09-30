@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-public class LocationWeatherData {
+public class LocationWeatherData extends LocationData {
     private Coordinates coord;
     private List<Weather> weather;
     private String base;

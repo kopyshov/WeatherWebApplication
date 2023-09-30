@@ -15,7 +15,7 @@ import java.util.Optional;
 public class AuthService {
     public void openAccess(UserData user, HttpServletRequest request, HttpServletResponse response) {
         //новая сессия, так как сюда попадаешь только если нужна новая сессия
-        openUserSession(user, request);
+        openUserSession(user.getId(), request);
         //RememberMe?
         boolean rememberMe = "true".equals(request.getParameter("rememberMe"))
                 || (boolean) request.getAttribute("rememberMe");
@@ -39,9 +39,9 @@ public class AuthService {
     }
 
 
-    private void openUserSession(UserData user, HttpServletRequest request) {
+    private void openUserSession(long userId, HttpServletRequest request) {
         HttpSession session = request.getSession();
-        session.setAttribute("loggedUser", user);
+        session.setAttribute("loggedUser", userId);
         session.setMaxInactiveInterval(60 * 60); //one hour
     }
 

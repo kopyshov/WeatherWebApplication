@@ -1,4 +1,4 @@
-package com.kopyshov.weatherwebapplication;
+package com.kopyshov.weatherwebapplication.common;
 
 import com.kopyshov.weatherwebapplication.common.entities.UserData;
 import com.kopyshov.weatherwebapplication.utils.ThymeleafUtil;

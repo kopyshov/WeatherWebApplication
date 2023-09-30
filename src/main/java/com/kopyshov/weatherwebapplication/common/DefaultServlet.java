@@ -1,4 +1,4 @@
-package com.kopyshov.weatherwebapplication;
+package com.kopyshov.weatherwebapplication.common;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -10,7 +10,7 @@ import java.io.IOException;
 @WebServlet({""})
 public class DefaultServlet extends BasicServlet {
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.sendRedirect(request.getContextPath() + "/weather");
     }
 }

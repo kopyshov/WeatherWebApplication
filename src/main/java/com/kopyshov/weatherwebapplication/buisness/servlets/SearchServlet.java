@@ -1,33 +1,36 @@
-package com.kopyshov.weatherwebapplication.openweathermap.api.servlets;
+package com.kopyshov.weatherwebapplication.buisness.servlets;
 
-import com.kopyshov.weatherwebapplication.BasicServlet;
+import com.kopyshov.weatherwebapplication.common.BasicServlet;
 import com.kopyshov.weatherwebapplication.common.dao.LocationDAO;
+import com.kopyshov.weatherwebapplication.common.dao.UserDAO;
 import com.kopyshov.weatherwebapplication.common.entities.Location;
 import com.kopyshov.weatherwebapplication.common.entities.UserData;
 import com.kopyshov.weatherwebapplication.openweathermap.api.OpenWeatherApiService;
 import com.kopyshov.weatherwebapplication.openweathermap.api.in.dto.LocationGeoData;
-import com.kopyshov.weatherwebapplication.openweathermap.api.out.RepresentationGeoData;
-import com.kopyshov.weatherwebapplication.openweathermap.api.out.RepresentationWeatherData;
+import com.kopyshov.weatherwebapplication.openweathermap.api.out.GeoData;
+import com.kopyshov.weatherwebapplication.openweathermap.api.out.WeatherData;
+import com.kopyshov.weatherwebapplication.buisness.WeatherService;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 @WebServlet({"/search"})
 public class SearchServlet extends BasicServlet {
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        HttpSession session = request.getSession();
-        UserData user = (UserData) session.getAttribute("loggedUser");
-        if (user != null) {
+        Long userId = (Long) request.getSession().getAttribute("loggedUser");
+        if(userId != null) {
+            UserData user = UserDAO.INSTANCE.findById(userId);
             context.setVariable("user", user);
         }
         try {
             String location = request.getParameter("location");
-            Map<RepresentationGeoData, RepresentationWeatherData> weatherData = OpenWeatherApiService.getWeatherDataByCityName(location);
+            Map<GeoData, WeatherData> weatherData = WeatherService.fetchCurrentWeatherData(location);
             context.setVariable("data", weatherData);
             templateEngine.process("search", context, response.getWriter());
         } catch (InterruptedException e) {
@@ -37,9 +40,8 @@ public class SearchServlet extends BasicServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        HttpSession session = request.getSession();
-        UserData user = (UserData) session.getAttribute("loggedUser");
-        if (user == null) {
+        Long userId = (Long) request.getSession().getAttribute("loggedUser");
+        if (userId == null) {
             templateEngine.process("login", context, response.getWriter());
             return;
         }
@@ -47,14 +49,14 @@ public class SearchServlet extends BasicServlet {
         double latitude = Double.parseDouble(request.getParameter("latitude"));
         double longitude = Double.parseDouble(request.getParameter("longitude"));
         try {
-            LocationGeoData locationByCoordinates = OpenWeatherApiService.getLocationsByCoordinates(latitude, longitude);
-
+            List<LocationGeoData> locationByCoordinates = OpenWeatherApiService.getGeoData(latitude, longitude);
+            LocationGeoData locationGeoData = locationByCoordinates.get(0);
             Location location = new Location();
-            location.setName(locationByCoordinates.getName());
-            location.setLatitude(locationByCoordinates.getLat());
-            location.setLongitude(locationByCoordinates.getLon());
+            location.setName(locationGeoData.getName());
+            location.setLatitude(locationGeoData.getLat());
+            location.setLongitude(locationGeoData.getLon());
 
-            LocationDAO.INSTANCE.addLocationToUser(user, location);
+            LocationDAO.INSTANCE.addLocationToUser(userId, location);
 
             response.sendRedirect(request.getContextPath() + "/weather");
         } catch (InterruptedException e) {
