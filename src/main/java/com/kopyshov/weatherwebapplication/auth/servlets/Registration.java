@@ -6,6 +6,7 @@ import jakarta.persistence.PersistenceException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.IOException;
 
@@ -21,7 +22,11 @@ public class Registration extends AuthServlet {
         try {
             String username = request.getParameter("username");
             String password = request.getParameter("password");
-            UserData user = new UserData(username, password);
+
+            String salt = BCrypt.gensalt();
+            String hashPass = BCrypt.hashpw(password, salt);
+
+            UserData user = new UserData(username, hashPass);
             UserDAO.INSTANCE.save(user);
             authService.openAccess(user, request, response);
             response.sendRedirect(request.getContextPath() + "/weather");

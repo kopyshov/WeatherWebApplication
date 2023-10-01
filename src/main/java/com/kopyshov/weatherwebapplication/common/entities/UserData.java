@@ -17,8 +17,8 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @org.hibernate.annotations.NamedQuery(
-        name = "findByUsernameAndPass",
-        query = "from UserData where username = :username AND password = :password"
+        name = "findByUsername",
+        query = "from UserData where username = :username"
 )
 public class UserData implements Serializable {
     @Id

@@ -12,11 +12,10 @@ import java.util.Optional;
 public enum UserDAO {
     INSTANCE;
 
-    public Optional<UserData> find(String username, String password) {
+    public Optional<UserData> find(String username) {
         try (Session session = HibernateUtil.INSTANCE.getSessionFactory().openSession()) {
-            Query<UserData> query = session.createNamedQuery("findByUsernameAndPass", UserData.class);
+            Query<UserData> query = session.createNamedQuery("findByUsername", UserData.class);
             query.setParameter("username", username);
-            query.setParameter("password", password);
             return query.uniqueResultOptional();
         }
     }

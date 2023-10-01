@@ -5,6 +5,7 @@ import com.kopyshov.weatherwebapplication.common.entities.UserData;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -22,10 +23,16 @@ public class LoginServlet extends AuthServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        Optional<UserData> user = UserDAO.INSTANCE.find(username, password);
+
+        Optional<UserData> user = UserDAO.INSTANCE.find(username);
         if (user.isPresent()) {
-            authService.openAccess(user.get(), request, response);
-            response.sendRedirect(request.getContextPath() + "/weather");
+            if(BCrypt.checkpw(password, user.get().getPassword())) {
+                authService.openAccess(user.get(), request, response);
+                response.sendRedirect(request.getContextPath() + "/weather");
+            } else {
+                context.setVariable("error", "Wrong password");
+                templateEngine.process("login", context, response.getWriter());
+            }
         } else {
             context.setVariable("error", "Unknown user, try again");
             templateEngine.process("login", context, response.getWriter());
