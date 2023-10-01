@@ -23,7 +23,9 @@ public class LoginServlet extends AuthServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-
+        if (username.isBlank() && password.isBlank()) {
+            context.setVariable("error", "Недопустимы пустые поля. Введите логин и пароль");
+        }
         Optional<UserData> user = UserDAO.INSTANCE.find(username);
         if (user.isPresent()) {
             if(BCrypt.checkpw(password, user.get().getPassword())) {
@@ -31,12 +33,11 @@ public class LoginServlet extends AuthServlet {
                 response.sendRedirect(request.getContextPath() + "/weather");
             } else {
                 context.setVariable("error", "Wrong password");
-                templateEngine.process("login", context, response.getWriter());
             }
         } else {
             context.setVariable("error", "Unknown user, try again");
-            templateEngine.process("login", context, response.getWriter());
         }
+        templateEngine.process("login", context, response.getWriter());
     }
 
     public void destroy() {

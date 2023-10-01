@@ -22,17 +22,20 @@ public class Registration extends AuthServlet {
         try {
             String username = request.getParameter("username");
             String password = request.getParameter("password");
+            if (username.isBlank() && password.isBlank()) {
+                context.setVariable("error", "Недопустимы пустые поля. Введите логин и пароль");
+            } else {
+                String salt = BCrypt.gensalt();
+                String hashPass = BCrypt.hashpw(password, salt);
 
-            String salt = BCrypt.gensalt();
-            String hashPass = BCrypt.hashpw(password, salt);
-
-            UserData user = new UserData(username, hashPass);
-            UserDAO.INSTANCE.save(user);
-            authService.openAccess(user, request, response);
-            response.sendRedirect(request.getContextPath() + "/weather");
+                UserData user = new UserData(username, hashPass);
+                UserDAO.INSTANCE.save(user);
+                authService.openAccess(user, request, response);
+                response.sendRedirect(request.getContextPath() + "/weather");
+            }
         } catch (PersistenceException e) {
             context.setVariable("error", "User with this login exists");
-            templateEngine.process("registration", context, response.getWriter());
         }
+        templateEngine.process("registration", context, response.getWriter());
     }
 }
