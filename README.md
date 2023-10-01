@@ -1,10 +1,10 @@
-# Предварительные настройки
-Прежде всего необходимо установить СУБД PostgreSQL 15 + PgAdmin 4.
+## Предварительные настройки
+Прежде всего необходимо установить СУБД.
 Для запуска в контейнере Tomcat необходимо добавить DataSource в файлах server.xml и context.xml.
 
-# server.xml
+### server.xml
 Место расположения: ~"путь к Tomcat"\conf\server.xml
-В разделе GlobalNamingResources добавляем ЕЩЕ один Resource
+В разделе GlobalNamingResources добавляем ЕЩЕ один Resource (пример настройки)
 
 	  <Resource name="jdbc/postgres" 
       global="jdbc/postgres" 
@@ -20,10 +20,10 @@
       minIdle="5" 
       maxWaitMillis="10000"/>
 
-# context.xml
+### context.xml
 Место расположения: ~"путь к Tomcat"\conf\context.xml
 
-В разделе Context добавляем ResourceLink
+В разделе Context добавляем ResourceLink (пример настройки)
 ```
 <ResourceLink name="jdbc/postgres"
 global="jdbc/postgres"
