@@ -13,7 +13,7 @@ import java.util.Optional;
 public enum LocationDAO {
     INSTANCE;
 
-    public void addLocationToUser(Long user, Location location) throws PersistenceException, ConstraintViolationException {
+    public void addLocationToUser(Long user, Location location) throws PersistenceException {
         try (Session session = HibernateUtil.INSTANCE.getSessionFactory().openSession()) {
             session.getTransaction().begin();
             UserData userData = session.find(UserData.class, user);
@@ -31,7 +31,7 @@ public enum LocationDAO {
         }
     }
 
-    public void removeLocationFromUser(Long userId, String latitude, String longitude) throws PersistenceException, ConstraintViolationException {
+    public void removeLocationFromUser(Long userId, String latitude, String longitude) throws PersistenceException {
         try (Session session = HibernateUtil.INSTANCE.getSessionFactory().openSession()) {
             session.getTransaction().begin();
             UserData userData = session.find(UserData.class, userId);

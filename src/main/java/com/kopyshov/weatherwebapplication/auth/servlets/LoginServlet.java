@@ -32,10 +32,10 @@ public class LoginServlet extends AuthServlet {
                 authService.openAccess(user.get(), request, response);
                 response.sendRedirect(request.getContextPath() + "/weather");
             } else {
-                context.setVariable("error", "Wrong password");
+                context.setVariable("error", "Неверный пароль");
             }
         } else {
-            context.setVariable("error", "Unknown user, try again");
+            context.setVariable("error", "Неизвестный пользователь. Попробуйте снова");
         }
         templateEngine.process("login", context, response.getWriter());
     }

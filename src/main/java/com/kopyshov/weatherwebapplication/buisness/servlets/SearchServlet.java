@@ -10,6 +10,7 @@ import com.kopyshov.weatherwebapplication.openweathermap.api.OpenWeatherApiServi
 import com.kopyshov.weatherwebapplication.openweathermap.api.in.dto.LocationGeoData;
 import com.kopyshov.weatherwebapplication.openweathermap.api.out.GeoData;
 import com.kopyshov.weatherwebapplication.openweathermap.api.out.WeatherData;
+import jakarta.persistence.PersistenceException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -30,6 +31,12 @@ public class SearchServlet extends BasicServlet {
         }
         try {
             String location = request.getParameter("location");
+            System.out.println(location);
+            if (location == null) {
+                context.setVariable("error", "Некорректный запрос. Отсутствует поле \"location\"");
+                templateEngine.process("search", context, response.getWriter());
+                return;
+            }
             Map<GeoData, WeatherData> weatherData = WeatherService.fetchCurrentWeatherData(location);
             context.setVariable("data", weatherData);
             templateEngine.process("search", context, response.getWriter());
@@ -46,10 +53,17 @@ public class SearchServlet extends BasicServlet {
             return;
         }
 
-        double latitude = Double.parseDouble(request.getParameter("latitude"));
-        double longitude = Double.parseDouble(request.getParameter("longitude"));
+        String latitude = request.getParameter("latitude");
+        String longitude = request.getParameter("longitude");
+        if (latitude.isBlank() && longitude.isBlank()) {
+            context.setVariable("error", "Некорректно задана локация");
+            templateEngine.process("search", context, response.getWriter());
+            return;
+        }
+        double lat = Double.parseDouble(latitude);
+        double lon = Double.parseDouble(longitude);
         try {
-            List<LocationGeoData> locationByCoordinates = OpenWeatherApiService.getGeoData(latitude, longitude);
+            List<LocationGeoData> locationByCoordinates = OpenWeatherApiService.getGeoData(lat, lon);
             LocationGeoData locationGeoData = locationByCoordinates.get(0);
             Location location = new Location();
             location.setName(locationGeoData.getName());
@@ -60,7 +74,8 @@ public class SearchServlet extends BasicServlet {
 
             response.sendRedirect(request.getContextPath() + "/weather");
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            context.setVariable("error", "Данная локация не не найдена");
         }
+        templateEngine.process("weather", context, response.getWriter());
     }
 }

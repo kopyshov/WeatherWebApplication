@@ -8,6 +8,7 @@ import com.kopyshov.weatherwebapplication.common.entities.Location;
 import com.kopyshov.weatherwebapplication.common.entities.UserData;
 import com.kopyshov.weatherwebapplication.openweathermap.api.out.GeoData;
 import com.kopyshov.weatherwebapplication.openweathermap.api.out.WeatherData;
+import jakarta.persistence.PersistenceException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -38,10 +39,18 @@ public class WeatherServlet extends BasicServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Long userId = (Long) request.getSession().getAttribute("loggedUser");
-        String latitude = request.getParameter("latitude");
-        String longitude = request.getParameter("longitude");
-        LocationDAO.INSTANCE.removeLocationFromUser(userId, latitude, longitude);
-        response.sendRedirect(request.getContextPath() + "/weather");
+        try {
+            Long userId = (Long) request.getSession().getAttribute("loggedUser");
+            String latitude = request.getParameter("latitude");
+            String longitude = request.getParameter("longitude");
+            if (latitude == null && longitude == null) {
+                throw new PersistenceException();
+            }
+            LocationDAO.INSTANCE.removeLocationFromUser(userId, latitude, longitude);
+            response.sendRedirect(request.getContextPath() + "/weather");
+        } catch (PersistenceException e) {
+            context.setVariable("error", "Данная локация не существует в списке пользователя");
+            templateEngine.process("weather", context, response.getWriter());
+        }
     }
 }

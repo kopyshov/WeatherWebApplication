@@ -4,7 +4,6 @@ import com.kopyshov.weatherwebapplication.common.entities.UserData;
 import com.kopyshov.weatherwebapplication.utils.HibernateUtil;
 import jakarta.persistence.PersistenceException;
 import org.hibernate.Session;
-import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.query.Query;
 
 import java.util.Optional;
@@ -26,7 +25,7 @@ public enum UserDAO {
         }
     }
 
-    public void save(UserData user) throws PersistenceException, ConstraintViolationException {
+    public void save(UserData user) throws PersistenceException {
         try (Session session = HibernateUtil.INSTANCE.getSessionFactory().openSession()) {
             session.getTransaction().begin();
             session.persist(user);
