@@ -5,6 +5,7 @@
 ![MVC(S)](https://img.shields.io/badge/mvc(s)-59666C?style=for-the-badge&labelColor=white)
 ![Hibernate](https://img.shields.io/badge/Hibernate-59666C?style=for-the-badge&logo=Hibernate&logoColor=white)
 ![JPA](https://img.shields.io/badge/jpa-59666C?style=for-the-badge&labelColor=white)
+![HikariCP](https://img.shields.io/badge/hikari_cp-59666C.svg?style=for-the-badge)
 ![Postgres](https://img.shields.io/badge/postgres-59666C.svg?style=for-the-badge&logo=postgresql&logoColor=white)
 ![HTTP](https://img.shields.io/badge/http-59666C?style=for-the-badge&labelColor=white)
 ![Rest Api](https://img.shields.io/badge/REST%20API-59666C?style=for-the-badge&labelColor=white)
@@ -31,7 +32,11 @@
 - Работа с внешними API
 
 ### Требования
-Прежде всего необходимо установить СУБД.
+
+Для запуска проекта, необходимо установить:
+- [Apache Tomcat](https://tomcat.apache.org/)
+- [PostgreSQL 15](https://www.postgresql.org/download/)
+
 Для запуска в контейнере Tomcat необходимо добавить DataSource в файлах server.xml и context.xml.
 
 #### server.xml
