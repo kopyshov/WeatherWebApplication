@@ -19,6 +19,7 @@
 
 ## Содержание
 - [О проекте](#о-проекте)
+- [Функционал приложения](#функционал-приложения)
 - [Требования](#требования)
 - [Запуск приложения](#запуск-приложения)
 - [Создание war-файла](#создание-war-файла)
@@ -30,6 +31,25 @@
 Целью проекта является:
 - Использование cookies и сессий для авторизации пользователей без использования фреймворков
 - Работа с внешними API
+
+### Функционал приложения
+Работа с пользователями:
+https://github.com/kopyshov/WeatherWebApplication/tree/master/src/main/java/com/kopyshov/weatherwebapplication/auth
+- Регистрация
+- Авторизация
+- Logout
+
+Работа с локациями:
+https://github.com/kopyshov/WeatherWebApplication/tree/master/src/main/java/com/kopyshov/weatherwebapplication/buisness
+- Поиск
+- Добавление в список
+- Просмотр списка локаций, для каждой локации отображается название и температура
+- Удаление из списка
+
+Работа с внешним API [OpenWeatherAPI](https://openweathermap.org/):
+https://github.com/kopyshov/WeatherWebApplication/tree/master/src/main/java/com/kopyshov/weatherwebapplication/openweathermap/api
+- Поиск локаций по названию
+- Получение погоды по координатам локации
 
 ### Требования
 
